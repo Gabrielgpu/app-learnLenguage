@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Key, Info, Check, ShieldAlert } from "lucide-react";
+import { X, Key, Info, Check } from "lucide-react";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -11,13 +11,17 @@ interface SettingsModalProps {
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [grokKey, setGrokKey] = useState("");
   const [geminiKey, setGeminiKey] = useState("");
+  const [openaiKey, setOpenaiKey] = useState("");
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const timeoutId = window.setTimeout(() => {
       setGrokKey(localStorage.getItem("grok_api_key") || "");
       setGeminiKey(localStorage.getItem("gemini_api_key") || "");
-    }
+      setOpenaiKey(localStorage.getItem("openai_api_key") || "");
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -27,6 +31,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     if (typeof window !== "undefined") {
       localStorage.setItem("grok_api_key", grokKey.trim());
       localStorage.setItem("gemini_api_key", geminiKey.trim());
+      localStorage.setItem("openai_api_key", openaiKey.trim());
     }
     setSaved(true);
     setTimeout(() => {
@@ -38,9 +43,11 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const handleClear = () => {
     setGrokKey("");
     setGeminiKey("");
+    setOpenaiKey("");
     if (typeof window !== "undefined") {
       localStorage.removeItem("grok_api_key");
       localStorage.removeItem("gemini_api_key");
+      localStorage.removeItem("openai_api_key");
     }
   };
 
@@ -91,6 +98,19 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               placeholder="AIzaSy..."
               value={geminiKey}
               onChange={(e) => setGeminiKey(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl border border-dark-border bg-dark-bg text-sm text-zinc-100 placeholder-zinc-600 focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none transition-all"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-zinc-300">
+              OpenAI API Key
+            </label>
+            <input
+              type="password"
+              placeholder="sk-..."
+              value={openaiKey}
+              onChange={(e) => setOpenaiKey(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl border border-dark-border bg-dark-bg text-sm text-zinc-100 placeholder-zinc-600 focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none transition-all"
             />
           </div>

@@ -98,6 +98,11 @@ export default function QuizView() {
               <Cpu className="w-3 h-3 text-brand-cyan" />
               <span>Gemini AI</span>
             </>
+          ) : currentQuestionSource === "openai" ? (
+            <>
+              <Cpu className="w-3 h-3 text-brand-green" />
+              <span>OpenAI</span>
+            </>
           ) : (
             <>
               <Database className="w-3 h-3 text-amber-500" />

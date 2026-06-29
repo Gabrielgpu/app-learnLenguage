@@ -5,7 +5,7 @@ export interface AnsweredQuestion {
   question: Question;
   selectedOption: string; // "A", "B", "C", "D", "E"
   isCorrect: boolean;
-  dataSource: string; // "grok" | "gemini" | "mock"
+  dataSource: string; // "grok" | "gemini" | "openai" | "mock"
   verbTense: string; // Keep track of which tense this question belonged to
 }
 
@@ -65,6 +65,7 @@ export const useQuizStore = create<QuizState>((set, get) => ({
     try {
       const grokKey = typeof window !== "undefined" ? localStorage.getItem("grok_api_key") || "" : "";
       const geminiKey = typeof window !== "undefined" ? localStorage.getItem("gemini_api_key") || "" : "";
+      const openaiKey = typeof window !== "undefined" ? localStorage.getItem("openai_api_key") || "" : "";
 
       const response = await fetch("/api/generate-question", {
         method: "POST",
@@ -72,6 +73,7 @@ export const useQuizStore = create<QuizState>((set, get) => ({
           "Content-Type": "application/json",
           ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
           ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
+          ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
         },
         body: JSON.stringify({ verbTense: selectedTense, excludeTexts: [] }),
       });
@@ -137,6 +139,7 @@ export const useQuizStore = create<QuizState>((set, get) => ({
     try {
       const grokKey = typeof window !== "undefined" ? localStorage.getItem("grok_api_key") || "" : "";
       const geminiKey = typeof window !== "undefined" ? localStorage.getItem("gemini_api_key") || "" : "";
+      const openaiKey = typeof window !== "undefined" ? localStorage.getItem("openai_api_key") || "" : "";
 
       const excludeTexts = answers.map((a) => a.question.question);
 
@@ -146,6 +149,7 @@ export const useQuizStore = create<QuizState>((set, get) => ({
           "Content-Type": "application/json",
           ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
           ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
+          ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
         },
         body: JSON.stringify({ verbTense: selectedTense, excludeTexts }),
       });
