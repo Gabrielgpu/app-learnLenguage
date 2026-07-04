@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { mockQuestions, Question } from "@/lib/mockQuestions";
+import { getRandomCachedQuestion, saveQuestionToCache } from "@/lib/quizCache";
+import { toTenseCode } from "@/lib/tenseMapping";
 
 function sanitizeApiError(message: string) {
   return message
@@ -295,10 +297,21 @@ ${excludeTexts && excludeTexts.length > 0 ? `\nATENÇÃO: Evite a todo custo ger
       }
     }
 
-    // Fallback if no keys or API call failed
+    const tenseCode = toTenseCode(verbTense);
+    if (questionData && dataSource !== "mock" && tenseCode) {
+      await saveQuestionToCache(tenseCode, questionData, dataSource);
+    }
+
+    if (!questionData && tenseCode) {
+      const cachedQuestion = await getRandomCachedQuestion(tenseCode, excludeTexts);
+      if (cachedQuestion) {
+        questionData = cachedQuestion;
+        dataSource = "cache";
+      }
+    }
+
     if (!questionData) {
       const list = mockQuestions[verbTense];
-      // Filter out already used mock questions to avoid repeat in demo mode
       let filteredList = list.filter((q) => !excludeTexts.includes(q.question));
       if (filteredList.length === 0) {
         filteredList = list;
@@ -308,7 +321,6 @@ ${excludeTexts && excludeTexts.length > 0 ? `\nATENÇÃO: Evite a todo custo ger
       dataSource = "mock";
     }
 
-    // Return the response with data-source header
     return NextResponse.json(questionData, {
       headers: {
         "x-data-source": dataSource,

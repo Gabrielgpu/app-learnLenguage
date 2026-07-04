@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: gabaritando-verbos-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gabaritando
+      POSTGRES_PASSWORD: gabaritando
+      POSTGRES_DB: gabaritando_verbos
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
