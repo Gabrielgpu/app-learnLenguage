@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuizStore } from "@/lib/store";
-import { Check, X, ArrowRight, HelpCircle, AlertCircle, RefreshCw, Cpu, Database } from "lucide-react";
+import { Check, X, ArrowRight, HelpCircle, AlertCircle, RefreshCw, Cpu, Database, BookOpen } from "lucide-react";
+import VerbReferenceDrawer from "./VerbReferenceDrawer";
 
 export default function QuizView() {
   const {
@@ -11,7 +12,8 @@ export default function QuizView() {
     answers,
     loading,
     error,
-    verbTense,
+    currentQuestionTense,
+    verbTenses,
     submitAnswer,
     nextQuestion,
     resetQuiz,
@@ -19,12 +21,17 @@ export default function QuizView() {
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const [prevQuestionText, setPrevQuestionText] = useState<string | null>(null);
 
   // Reset local state when a new question is loaded
-  useEffect(() => {
+  const currentQuestionText = currentQuestion?.question || null;
+  if (currentQuestionText !== prevQuestionText) {
+    setPrevQuestionText(currentQuestionText);
     setSelectedOption(null);
     setIsSubmitted(false);
-  }, [currentQuestion]);
+  }
 
   if (loading && !currentQuestion) {
     return (
@@ -103,6 +110,11 @@ export default function QuizView() {
               <Cpu className="w-3 h-3 text-brand-green" />
               <span>OpenAI</span>
             </>
+          ) : currentQuestionSource === "cache" ? (
+            <>
+              <Database className="w-3 h-3 text-brand-cyan" />
+              <span>Biblioteca</span>
+            </>
           ) : (
             <>
               <Database className="w-3 h-3 text-amber-500" />
@@ -127,7 +139,7 @@ export default function QuizView() {
             <HelpCircle className="w-4.5 h-4.5" />
           </div>
           <span className="text-xs font-bold tracking-wider text-brand-purple uppercase">
-            {verbTense}
+            {currentQuestionTense}
           </span>
         </div>
         <p className="text-zinc-100 text-sm md:text-base font-semibold leading-relaxed whitespace-pre-wrap">
@@ -214,6 +226,22 @@ export default function QuizView() {
           Confirmar Resposta
         </button>
       )}
+
+      {/* Floating Action Button to Review Conjugations */}
+      <button
+        onClick={() => setIsDrawerOpen(true)}
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 bg-zinc-900/90 border border-dark-border hover:border-brand-purple/40 hover:bg-zinc-800 text-zinc-100 font-extrabold text-xs rounded-full shadow-2xl transition-all hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-md animate-fade-in"
+      >
+        <BookOpen className="w-4 h-4 text-brand-purple-light" />
+        <span>Revisar Conjugação</span>
+      </button>
+
+      {/* Conjugation Review Drawer */}
+      <VerbReferenceDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        selectedTenses={verbTenses}
+      />
     </div>
   );
 }

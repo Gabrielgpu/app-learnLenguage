@@ -5,7 +5,7 @@ export interface AnsweredQuestion {
   question: Question;
   selectedOption: string; // "A", "B", "C", "D", "E"
   isCorrect: boolean;
-  dataSource: string; // "grok" | "gemini" | "openai" | "mock"
+  dataSource: string; // "grok" | "gemini" | "openai" | "cache" | "mock"
   verbTense: string; // Keep track of which tense this question belonged to
 }
 
@@ -90,9 +90,10 @@ export const useQuizStore = create<QuizState>((set, get) => ({
         currentQuestionSource: dataSource,
         loading: false,
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Erro desconhecido ao carregar questão.";
       set({
-        error: err.message || "Erro desconhecido ao carregar questão.",
+        error: message,
         loading: false,
       });
     }
@@ -166,9 +167,10 @@ export const useQuizStore = create<QuizState>((set, get) => ({
         currentQuestionSource: dataSource,
         loading: false,
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Erro ao carregar próxima questão.";
       set({
-        error: err.message || "Erro ao carregar próxima questão.",
+        error: message,
         loading: false,
       });
     }
