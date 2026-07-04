@@ -6,17 +6,20 @@ import SettingsModal from "./SettingsModal";
 
 export default function Header() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [activeAPI, setActiveAPI] = useState<"grok" | "gemini" | "mock">("mock");
+  const [activeAPI, setActiveAPI] = useState<"grok" | "gemini" | "openai" | "mock">("mock");
 
   // Poll or set up listener for API key changes in localStorage
   const checkAPIKeys = () => {
     if (typeof window !== "undefined") {
       const grokKey = localStorage.getItem("grok_api_key");
       const geminiKey = localStorage.getItem("gemini_api_key");
+      const openaiKey = localStorage.getItem("openai_api_key");
       if (grokKey) {
         setActiveAPI("grok");
       } else if (geminiKey) {
         setActiveAPI("gemini");
+      } else if (openaiKey) {
+        setActiveAPI("openai");
       } else {
         setActiveAPI("mock");
       }
@@ -24,11 +27,8 @@ export default function Header() {
   };
 
   useEffect(() => {
-    checkAPIKeys();
-    // Check key status every time the settings modal closes
-    if (!isSettingsOpen) {
-      checkAPIKeys();
-    }
+    const timeoutId = window.setTimeout(checkAPIKeys, 0);
+    return () => window.clearTimeout(timeoutId);
   }, [isSettingsOpen]);
 
   return (
@@ -68,6 +68,14 @@ export default function Header() {
                   <span className="text-zinc-300 font-medium flex items-center gap-1">
                     <Cpu className="w-3.5 h-3.5 text-brand-cyan" />
                     Gemini API
+                  </span>
+                </>
+              ) : activeAPI === "openai" ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-brand-green animate-pulse" />
+                  <span className="text-zinc-300 font-medium flex items-center gap-1">
+                    <Cpu className="w-3.5 h-3.5 text-brand-green" />
+                    OpenAI API
                   </span>
                 </>
               ) : (

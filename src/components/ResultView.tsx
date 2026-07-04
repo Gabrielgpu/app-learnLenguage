@@ -5,7 +5,7 @@ import { useQuizStore } from "@/lib/store";
 import { Award, ArrowLeft, RefreshCw, Check, X, ChevronDown, ChevronUp } from "lucide-react";
 
 export default function ResultView() {
-  const { answers, resetQuiz, startQuiz, verbTense } = useQuizStore();
+  const { answers, resetQuiz, startQuiz } = useQuizStore();
   const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);
 
   const correctCount = answers.filter((a) => a.isCorrect).length;
