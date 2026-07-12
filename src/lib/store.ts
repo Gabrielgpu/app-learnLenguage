@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Question } from "./mockQuestions";
+import { VerbTenseLabel } from "./tenseMapping";
 
 export interface AnsweredQuestion {
   question: Question;
@@ -11,16 +12,16 @@ export interface AnsweredQuestion {
 
 interface QuizState {
   phase: "home" | "quiz" | "result";
-  verbTenses: ("Presente do Indicativo" | "Pretérito Perfeito" | "Pretérito Imperfeito")[];
+  verbTenses: VerbTenseLabel[];
   currentQuestion: Question | null;
-  currentQuestionTense: "Presente do Indicativo" | "Pretérito Perfeito" | "Pretérito Imperfeito" | null;
+  currentQuestionTense: VerbTenseLabel | null;
   currentQuestionSource: string;
   answers: AnsweredQuestion[];
   loading: boolean;
   error: string | null;
   
   // Actions
-  toggleVerbTense: (tense: "Presente do Indicativo" | "Pretérito Perfeito" | "Pretérito Imperfeito") => void;
+  toggleVerbTense: (tense: VerbTenseLabel) => void;
   startQuiz: () => Promise<void>;
   submitAnswer: (optionLetter: string) => void;
   nextQuestion: () => Promise<void>;
