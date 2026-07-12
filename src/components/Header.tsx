@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: "/quiz", label: "Quiz" },
   { href: "/conjugacao", label: "Conjugação" },
   { href: "/complete-frase", label: "Complete a Frase" },
+  { href: "/correlacao-verbal", label: "Correlação Verbal" },
   { href: "/revisao", label: "Revisão" },
 ];
 

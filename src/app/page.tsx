@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { BookOpen, ArrowRight, Zap, PenLine, Puzzle, GraduationCap } from "lucide-react";
+import { BookOpen, ArrowRight, Zap, PenLine, Puzzle, GraduationCap, GitBranch } from "lucide-react";
 
 const FEATURES = [
   {
@@ -35,6 +35,16 @@ const FEATURES = [
     iconColor: "text-teal-400",
     shadow: "shadow-teal-500/10",
     border: "hover:border-teal-500/30 border-dark-border",
+  },
+  {
+    href: "/correlacao-verbal",
+    title: "Correlação Verbal",
+    description: "Domine os pares de tempos verbais que combinam entre si — indicativo e subjuntivo — em frases condicionais e temporais.",
+    icon: GitBranch,
+    iconBg: "bg-gradient-to-tr from-fuchsia-500/20 to-violet-400/20 border-fuchsia-500/30",
+    iconColor: "text-fuchsia-400",
+    shadow: "shadow-fuchsia-500/10",
+    border: "hover:border-fuchsia-500/30 border-dark-border",
   },
   {
     href: "/revisao",
