@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useConjugationStore } from "@/lib/conjugationStore";
 import {
   Lightbulb,
@@ -27,6 +28,7 @@ export default function ConjugationView() {
     nextExercise,
     resetConjugation,
   } = useConjugationStore();
+  const router = useRouter();
 
   const [userInput, setUserInput] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -106,7 +108,7 @@ export default function ConjugationView() {
         <p className="text-zinc-400 text-sm mb-6 leading-relaxed">{error}</p>
         <div className="flex gap-3 w-full">
           <button
-            onClick={resetConjugation}
+            onClick={() => { resetConjugation(); router.push("/"); }}
             className="flex-1 py-3 border border-dark-border bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 font-medium rounded-xl text-sm transition-all cursor-pointer"
           >
             Voltar ao Menu

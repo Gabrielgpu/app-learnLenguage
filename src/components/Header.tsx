@@ -1,12 +1,22 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { GraduationCap, Settings, Cpu, Database } from "lucide-react";
 import SettingsModal from "./SettingsModal";
+
+const NAV_ITEMS = [
+  { href: "/quiz", label: "Quiz" },
+  { href: "/conjugacao", label: "Conjugação" },
+  { href: "/complete-frase", label: "Complete a Frase" },
+  { href: "/revisao", label: "Revisão" },
+];
 
 export default function Header() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [activeAPI, setActiveAPI] = useState<"grok" | "gemini" | "openai" | "mock">("mock");
+  const pathname = usePathname();
 
   // Poll or set up listener for API key changes in localStorage
   const checkAPIKeys = () => {
@@ -34,14 +44,14 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full border-b border-dark-border bg-dark-bg/80 backdrop-blur-md">
-        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-cyan p-0.5 flex items-center justify-center shadow-lg shadow-brand-purple/20">
               <div className="w-full h-full bg-dark-bg rounded-[10px] flex items-center justify-center">
                 <GraduationCap className="w-5 h-5 text-brand-cyan" />
               </div>
             </div>
-            <div>
+            <div className="hidden sm:block">
               <h1 className="font-extrabold text-base tracking-tight leading-none">
                 Gabaritando <span className="bg-gradient-to-r from-brand-purple-light to-brand-cyan bg-clip-text text-transparent">Verbos</span>
               </h1>
@@ -49,7 +59,26 @@ export default function Header() {
                 IA Grammar Trainer
               </span>
             </div>
-          </div>
+          </Link>
+
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_ITEMS.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    isActive
+                      ? "bg-zinc-900 text-zinc-100 border border-brand-purple/30"
+                      : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
           <div className="flex items-center gap-3">
             {/* Status Indicator */}
