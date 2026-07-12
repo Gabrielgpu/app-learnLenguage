@@ -30,11 +30,4 @@ export interface CorrelationAnswer {
   feedbackType: FeedbackType;
 }
 
-export interface CheckCorrelationResponse {
-  isCorrect: boolean;
-  blankResults: [boolean, boolean];
-  feedback: string;
-  feedbackType: FeedbackType;
-}
-
 export const BLANK_PLACEHOLDER = "______";

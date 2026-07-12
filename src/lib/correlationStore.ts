@@ -2,112 +2,82 @@ import { create } from "zustand";
 import {
   CorrelationExercise,
   CorrelationAnswer,
-  CheckCorrelationResponse,
   CorrelationPairId,
 } from "./correlationTypes";
+import { correlationQuestions } from "./correlationQuestions";
+import { FeedbackType } from "./conjugationTypes";
 
 type CorrelationPhase = "home" | "correlation-exercise" | "correlation-result";
+
+const TOTAL_EXERCISES = 5;
+const ALL_PAIR_IDS = Object.keys(correlationQuestions) as CorrelationPairId[];
+
+function shuffle<T>(items: T[]): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function buildSession(selectedPairs: CorrelationPairId[]): CorrelationExercise[] {
+  const pairPool = selectedPairs.length > 0 ? selectedPairs : ALL_PAIR_IDS;
+  const pool = pairPool.flatMap((p) => correlationQuestions[p] || []);
+  return shuffle(pool).slice(0, TOTAL_EXERCISES);
+}
+
+function checkAnswers(
+  exercise: CorrelationExercise,
+  userAnswers: [string, string]
+): { isCorrect: boolean; blankResults: [boolean, boolean]; feedback: string; feedbackType: FeedbackType } {
+  const blankResults: [boolean, boolean] = [
+    userAnswers[0].trim().toLowerCase() === exercise.verbs[0].correctAnswer.trim().toLowerCase(),
+    userAnswers[1].trim().toLowerCase() === exercise.verbs[1].correctAnswer.trim().toLowerCase(),
+  ];
+  const isCorrect = blankResults[0] && blankResults[1];
+
+  if (isCorrect) {
+    return {
+      isCorrect: true,
+      blankResults,
+      feedback: `✅ Correto! "${exercise.verbs[0].correctAnswer}" e "${exercise.verbs[1].correctAnswer}" formam a correlação verbal correta.`,
+      feedbackType: "correct",
+    };
+  }
+
+  const wrongParts: string[] = [];
+  if (!blankResults[0]) wrongParts.push(`a 1ª lacuna deveria ser "${exercise.verbs[0].correctAnswer}"`);
+  if (!blankResults[1]) wrongParts.push(`a 2ª lacuna deveria ser "${exercise.verbs[1].correctAnswer}"`);
+
+  return {
+    isCorrect: false,
+    blankResults,
+    feedback: `Resposta incorreta: ${wrongParts.join(" e ")}.`,
+    feedbackType: "other",
+  };
+}
 
 interface CorrelationState {
   phase: CorrelationPhase;
   selectedPairs: CorrelationPairId[];
+  session: CorrelationExercise[];
   currentExercise: CorrelationExercise | null;
-  currentExerciseSource: string;
   answers: CorrelationAnswer[];
-  loading: boolean;
-  error: string | null;
 
   togglePair: (pairId: CorrelationPairId) => void;
-  startCorrelation: () => Promise<void>;
-  submitCorrelation: (userAnswers: [string, string]) => Promise<void>;
-  nextCorrelation: () => Promise<void>;
+  startCorrelation: () => void;
+  submitCorrelation: (userAnswers: [string, string]) => void;
+  nextCorrelation: () => void;
   resetCorrelation: () => void;
-}
-
-const TOTAL_EXERCISES = 5;
-
-function getApiKeys() {
-  if (typeof window === "undefined") return {};
-  return {
-    grokKey: localStorage.getItem("grok_api_key") || "",
-    geminiKey: localStorage.getItem("gemini_api_key") || "",
-    openaiKey: localStorage.getItem("openai_api_key") || "",
-  };
-}
-
-async function fetchExercise(
-  selectedPairs: CorrelationPairId[],
-  excludeSentences: string[]
-): Promise<{ exercise: CorrelationExercise; source: string }> {
-  const { grokKey, geminiKey, openaiKey } = getApiKeys();
-  const response = await fetch("/api/correlation-exercise", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
-      ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
-      ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
-    },
-    body: JSON.stringify({ selectedPairs, excludeSentences }),
-  });
-
-  if (!response.ok) {
-    throw new Error("Erro ao gerar exercício de Correlação Verbal.");
-  }
-
-  const exercise: CorrelationExercise = await response.json();
-  const source = response.headers.get("x-data-source") || "mock";
-  return { exercise, source };
-}
-
-async function checkAnswers(
-  exercise: CorrelationExercise,
-  userAnswers: [string, string]
-): Promise<CheckCorrelationResponse> {
-  const { grokKey, geminiKey, openaiKey } = getApiKeys();
-  const response = await fetch("/api/check-correlation", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
-      ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
-      ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
-    },
-    body: JSON.stringify({
-      sentence: exercise.sentence,
-      pairLabel: exercise.pairLabel,
-      verbs: exercise.verbs,
-      userAnswers,
-    }),
-  });
-
-  if (!response.ok) {
-    const blankResults: [boolean, boolean] = [
-      userAnswers[0].trim().toLowerCase() === exercise.verbs[0].correctAnswer.trim().toLowerCase(),
-      userAnswers[1].trim().toLowerCase() === exercise.verbs[1].correctAnswer.trim().toLowerCase(),
-    ];
-    const isCorrect = blankResults[0] && blankResults[1];
-    return {
-      isCorrect,
-      blankResults,
-      feedback: isCorrect
-        ? "Correto!"
-        : `As respostas corretas são "${exercise.verbs[0].correctAnswer}" e "${exercise.verbs[1].correctAnswer}".`,
-      feedbackType: isCorrect ? "correct" : "other",
-    };
-  }
-
-  return response.json();
 }
 
 export const useCorrelationStore = create<CorrelationState>((set, get) => ({
   phase: "home",
   selectedPairs: [],
+  session: [],
   currentExercise: null,
-  currentExerciseSource: "mock",
   answers: [],
-  loading: false,
-  error: null,
 
   togglePair: (pairId) => {
     const { selectedPairs } = get();
@@ -118,99 +88,50 @@ export const useCorrelationStore = create<CorrelationState>((set, get) => ({
     }
   },
 
-  startCorrelation: async () => {
+  startCorrelation: () => {
     const { selectedPairs } = get();
     if (selectedPairs.length === 0) return;
 
+    const session = buildSession(selectedPairs);
     set({
       phase: "correlation-exercise",
+      session,
+      currentExercise: session[0] ?? null,
       answers: [],
-      loading: true,
-      error: null,
-      currentExercise: null,
     });
-
-    try {
-      const { exercise, source } = await fetchExercise(selectedPairs, []);
-      set({ currentExercise: exercise, currentExerciseSource: source, loading: false });
-    } catch (err) {
-      set({
-        error: err instanceof Error ? err.message : "Erro ao carregar exercício.",
-        loading: false,
-      });
-    }
   },
 
-  submitCorrelation: async (userAnswers: [string, string]) => {
+  submitCorrelation: (userAnswers: [string, string]) => {
     const { currentExercise, answers } = get();
     if (!currentExercise) return;
 
-    set({ loading: true });
-
-    try {
-      const result = await checkAnswers(currentExercise, userAnswers);
-      const newAnswer: CorrelationAnswer = {
-        exercise: currentExercise,
-        userAnswers,
-        isCorrect: result.isCorrect,
-        blankResults: result.blankResults,
-        feedback: result.feedback,
-        feedbackType: result.feedbackType,
-      };
-      set({ answers: [...answers, newAnswer], loading: false });
-    } catch {
-      const blankResults: [boolean, boolean] = [
-        userAnswers[0].trim().toLowerCase() ===
-          currentExercise.verbs[0].correctAnswer.trim().toLowerCase(),
-        userAnswers[1].trim().toLowerCase() ===
-          currentExercise.verbs[1].correctAnswer.trim().toLowerCase(),
-      ];
-      const isCorrect = blankResults[0] && blankResults[1];
-      const newAnswer: CorrelationAnswer = {
-        exercise: currentExercise,
-        userAnswers,
-        isCorrect,
-        blankResults,
-        feedback: isCorrect
-          ? "Correto!"
-          : `As respostas corretas são "${currentExercise.verbs[0].correctAnswer}" e "${currentExercise.verbs[1].correctAnswer}".`,
-        feedbackType: isCorrect ? "correct" : "other",
-      };
-      set({ answers: [...answers, newAnswer], loading: false });
-    }
+    const result = checkAnswers(currentExercise, userAnswers);
+    const newAnswer: CorrelationAnswer = {
+      exercise: currentExercise,
+      userAnswers,
+      ...result,
+    };
+    set({ answers: [...answers, newAnswer] });
   },
 
-  nextCorrelation: async () => {
-    const { answers, selectedPairs } = get();
+  nextCorrelation: () => {
+    const { session, answers } = get();
 
-    if (answers.length >= TOTAL_EXERCISES) {
+    if (answers.length >= session.length) {
       set({ phase: "correlation-result" });
       return;
     }
 
-    set({ loading: true, error: null, currentExercise: null });
-
-    try {
-      const excludeSentences = answers.map((a) => a.exercise.sentence);
-      const { exercise, source } = await fetchExercise(selectedPairs, excludeSentences);
-      set({ currentExercise: exercise, currentExerciseSource: source, loading: false });
-    } catch (err) {
-      set({
-        error: err instanceof Error ? err.message : "Erro ao carregar próximo exercício.",
-        loading: false,
-      });
-    }
+    set({ currentExercise: session[answers.length] });
   },
 
   resetCorrelation: () => {
     set({
       phase: "home",
       selectedPairs: [],
+      session: [],
       currentExercise: null,
-      currentExerciseSource: "mock",
       answers: [],
-      loading: false,
-      error: null,
     });
   },
 }));

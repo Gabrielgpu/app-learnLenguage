@@ -16,7 +16,7 @@ function getPerformanceLabel(percent: number) {
 }
 
 export default function CorrelationResult() {
-  const { answers, startCorrelation, resetCorrelation, loading } = useCorrelationStore();
+  const { answers, startCorrelation, resetCorrelation } = useCorrelationStore();
   const router = useRouter();
 
   const correct = answers.filter((a) => a.isCorrect).length;
@@ -124,17 +124,10 @@ export default function CorrelationResult() {
         </button>
         <button
           onClick={startCorrelation}
-          disabled={loading}
-          className="flex-1 py-3.5 bg-gradient-to-r from-fuchsia-500 to-violet-400 hover:opacity-95 active:scale-95 disabled:opacity-50 text-zinc-950 font-extrabold rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-fuchsia-500/10"
+          className="flex-1 py-3.5 bg-gradient-to-r from-fuchsia-500 to-violet-400 hover:opacity-95 active:scale-95 text-zinc-950 font-extrabold rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-fuchsia-500/10"
         >
-          {loading ? (
-            <div className="w-4 h-4 rounded-full border-2 border-zinc-950 border-t-transparent animate-spin" />
-          ) : (
-            <>
-              <RotateCcw className="w-4 h-4" />
-              Praticar Novamente
-            </>
-          )}
+          <RotateCcw className="w-4 h-4" />
+          Praticar Novamente
         </button>
       </div>
     </div>

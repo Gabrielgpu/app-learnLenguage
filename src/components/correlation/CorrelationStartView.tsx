@@ -7,7 +7,7 @@ import CorrelationPairSelector from "./CorrelationPairSelector";
 import { ArrowRight, GitBranch } from "lucide-react";
 
 export default function CorrelationStartView() {
-  const { selectedPairs, togglePair, startCorrelation, loading } = useCorrelationStore();
+  const { selectedPairs, togglePair, startCorrelation } = useCorrelationStore();
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 md:py-12 flex flex-col animate-slide-up">
@@ -40,17 +40,11 @@ export default function CorrelationStartView() {
       <div className="flex flex-col items-center mb-4">
         <button
           onClick={startCorrelation}
-          disabled={selectedPairs.length === 0 || loading}
+          disabled={selectedPairs.length === 0}
           className="w-full sm:w-64 px-6 py-3.5 font-extrabold text-zinc-950 rounded-xl transition-all duration-300 shadow-xl shadow-fuchsia-500/10 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none bg-gradient-to-r from-fuchsia-500 to-violet-400 hover:opacity-95"
         >
-          {loading ? (
-            <div className="w-5 h-5 rounded-full border-2 border-zinc-950 border-t-transparent animate-spin" />
-          ) : (
-            <>
-              Iniciar Correlação Verbal
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
-            </>
-          )}
+          Iniciar Correlação Verbal
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
         </button>
         {selectedPairs.length === 0 && (
           <span className="text-xs text-zinc-600 mt-2.5">
