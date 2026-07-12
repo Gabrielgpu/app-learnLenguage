@@ -5,6 +5,7 @@ import {
   Difficulty,
   CheckConjugationResponse,
 } from "./conjugationTypes";
+import { fetchWithApiKeys } from "./aiApiClient";
 
 type ConjugationPhase =
   | "home"
@@ -43,30 +44,15 @@ interface ConjugationState {
 
 const TOTAL_EXERCISES = 5;
 
-function getApiKeys() {
-  if (typeof window === "undefined") return {};
-  return {
-    grokKey: localStorage.getItem("grok_api_key") || "",
-    geminiKey: localStorage.getItem("gemini_api_key") || "",
-    openaiKey: localStorage.getItem("openai_api_key") || "",
-  };
-}
-
 async function fetchExercise(
   difficulty: Difficulty,
   selectedTenses: string[],
   excludeVerbs: string[]
 ): Promise<{ exercise: ConjugationExercise; source: string }> {
-  const { grokKey, geminiKey, openaiKey } = getApiKeys();
-  const response = await fetch("/api/conjugation-exercise", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
-      ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
-      ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
-    },
-    body: JSON.stringify({ difficulty, selectedTenses, excludeVerbs }),
+  const response = await fetchWithApiKeys("/api/conjugation-exercise", {
+    difficulty,
+    selectedTenses,
+    excludeVerbs,
   });
 
   if (!response.ok) {
@@ -82,23 +68,13 @@ async function checkAnswer(
   exercise: ConjugationExercise,
   userAnswer: string
 ): Promise<CheckConjugationResponse> {
-  const { grokKey, geminiKey, openaiKey } = getApiKeys();
-  const response = await fetch("/api/check-conjugation", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
-      ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
-      ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
-    },
-    body: JSON.stringify({
-      verb: exercise.verb,
-      tense: exercise.tense,
-      person: exercise.person,
-      correctAnswer: exercise.correctAnswer,
-      userAnswer,
-      fullConjugation: exercise.fullConjugation,
-    }),
+  const response = await fetchWithApiKeys("/api/check-conjugation", {
+    verb: exercise.verb,
+    tense: exercise.tense,
+    person: exercise.person,
+    correctAnswer: exercise.correctAnswer,
+    userAnswer,
+    fullConjugation: exercise.fullConjugation,
   });
 
   if (!response.ok) {

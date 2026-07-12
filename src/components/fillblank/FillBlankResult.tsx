@@ -4,16 +4,11 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useFillBlankStore } from "@/lib/fillBlankStore";
 import { FillBlankAnswer } from "@/lib/fillBlankTypes";
+import { getPerformanceLabel } from "@/lib/performance";
+import ScoreRing from "@/components/ScoreRing";
 import { Check, X, Home, RotateCcw, Trophy, AlertTriangle } from "lucide-react";
 
 const TOTAL_EXERCISES = 5;
-
-function getPerformanceLabel(percent: number) {
-  if (percent >= 90) return { label: "Excelente!", color: "text-brand-green" };
-  if (percent >= 70) return { label: "Muito Bom!", color: "text-brand-cyan" };
-  if (percent >= 50) return { label: "Bom!", color: "text-amber-400" };
-  return { label: "Continue Praticando", color: "text-brand-red" };
-}
 
 export default function FillBlankResult() {
   const { answers, startFillBlank, resetFillBlank, loading } = useFillBlankStore();
@@ -22,9 +17,6 @@ export default function FillBlankResult() {
   const correct = answers.filter((a) => a.isCorrect).length;
   const percent = Math.round((correct / TOTAL_EXERCISES) * 100);
   const { label, color } = getPerformanceLabel(percent);
-
-  const circumference = 2 * Math.PI * 42;
-  const strokeDashoffset = circumference - (percent / 100) * circumference;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 md:py-12 flex flex-col animate-slide-up">
@@ -37,33 +29,10 @@ export default function FillBlankResult() {
       </div>
 
       <div className="flex flex-col items-center mb-8">
-        <div className="relative w-32 h-32">
-          <svg className="w-full h-full -rotate-90" viewBox="0 0 96 96">
-            <circle cx="48" cy="48" r="42" fill="none" stroke="#27272a" strokeWidth="8" />
-            <circle
-              cx="48"
-              cy="48"
-              r="42"
-              fill="none"
-              stroke="url(#fillBlankScoreGrad)"
-              strokeWidth="8"
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
-              className="transition-all duration-1000 ease-out"
-            />
-            <defs>
-              <linearGradient id="fillBlankScoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#8257e5" />
-                <stop offset="100%" stopColor="#06b6d4" />
-              </linearGradient>
-            </defs>
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-black text-zinc-100">{correct}</span>
-            <span className="text-xs text-zinc-500 font-semibold">/ {TOTAL_EXERCISES} corretas</span>
-          </div>
-        </div>
+        <ScoreRing percent={percent} gradientId="fillBlankScoreGrad" colors={["#8257e5", "#06b6d4"]}>
+          <span className="text-3xl font-black text-zinc-100">{correct}</span>
+          <span className="text-xs text-zinc-500 font-semibold">/ {TOTAL_EXERCISES} corretas</span>
+        </ScoreRing>
         <p className={`mt-3 text-lg font-extrabold ${color}`}>{label}</p>
         <p className="text-xs text-zinc-500 mt-1">{percent}% de aproveitamento</p>
       </div>

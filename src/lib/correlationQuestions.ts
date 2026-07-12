@@ -35,6 +35,61 @@ export const correlationQuestions: Record<CorrelationPairId, CorrelationExercise
       explanation:
         "'Recomenda' (Presente do Indicativo) rege a oração subordinada no Presente do Subjuntivo ('leiam'), padrão comum com verbos de recomendação/sugestão.",
     },
+    {
+      sentence: "O edital ______ que os candidatos ______ pontualmente.",
+      pairId: "presente-presente-subjuntivo",
+      pairLabel: "Presente do Indicativo + Presente do Subjuntivo",
+      verbs: [
+        { infinitive: "exigir", tense: "Presente do Indicativo", correctAnswer: "exige" },
+        { infinitive: "comparecer", tense: "Presente do Subjuntivo", correctAnswer: "compareçam" },
+      ],
+      explanation:
+        "'Exige' (Presente do Indicativo, 3ª pessoa) rege a subordinada no Presente do Subjuntivo ('compareçam'), pois expressa exigência sobre uma ação futura ainda não realizada.",
+    },
+    {
+      sentence: "Eu ______ que você ______ com mais cuidado.",
+      pairId: "presente-presente-subjuntivo",
+      pairLabel: "Presente do Indicativo + Presente do Subjuntivo",
+      verbs: [
+        { infinitive: "pedir", tense: "Presente do Indicativo", correctAnswer: "Peço" },
+        { infinitive: "revisar", tense: "Presente do Subjuntivo", correctAnswer: "revise" },
+      ],
+      explanation:
+        "'Peço' (Presente do Indicativo, 1ª pessoa) rege a subordinada no Presente do Subjuntivo ('revise'), padrão típico de verbos de pedido.",
+    },
+    {
+      sentence: "A lei ______ que todos ______ as normas.",
+      pairId: "presente-presente-subjuntivo",
+      pairLabel: "Presente do Indicativo + Presente do Subjuntivo",
+      verbs: [
+        { infinitive: "determinar", tense: "Presente do Indicativo", correctAnswer: "determina" },
+        { infinitive: "seguir", tense: "Presente do Subjuntivo", correctAnswer: "sigam" },
+      ],
+      explanation:
+        "'Determina' (Presente do Indicativo) expressa uma determinação que rege o Presente do Subjuntivo ('sigam') na oração subordinada.",
+    },
+    {
+      sentence: "Nós ______ que a banca ______ o gabarito o quanto antes.",
+      pairId: "presente-presente-subjuntivo",
+      pairLabel: "Presente do Indicativo + Presente do Subjuntivo",
+      verbs: [
+        { infinitive: "esperar", tense: "Presente do Indicativo", correctAnswer: "esperamos" },
+        { infinitive: "divulgar", tense: "Presente do Subjuntivo", correctAnswer: "divulgue" },
+      ],
+      explanation:
+        "'Esperamos' (Presente do Indicativo) expressa expectativa e rege o Presente do Subjuntivo ('divulgue') na oração subordinada.",
+    },
+    {
+      sentence: "O chefe ______ que a equipe ______ o relatório até amanhã.",
+      pairId: "presente-presente-subjuntivo",
+      pairLabel: "Presente do Indicativo + Presente do Subjuntivo",
+      verbs: [
+        { infinitive: "solicitar", tense: "Presente do Indicativo", correctAnswer: "solicita" },
+        { infinitive: "entregar", tense: "Presente do Subjuntivo", correctAnswer: "entregue" },
+      ],
+      explanation:
+        "'Solicita' (Presente do Indicativo) rege a subordinada no Presente do Subjuntivo ('entregue'), padrão comum com verbos de solicitação.",
+    },
   ],
   "futuro-subjuntivo-futuro-presente": [
     {
@@ -70,6 +125,61 @@ export const correlationQuestions: Record<CorrelationPairId, CorrelationExercise
       explanation:
         "'Seguirem' (Futuro do Subjuntivo, 3ª pessoa do plural) expressa condição futura; 'estarão' (Futuro do Presente) expressa a consequência certa dessa condição.",
     },
+    {
+      sentence: "Quando os candidatos ______ o resultado, muitos ______ aliviados.",
+      pairId: "futuro-subjuntivo-futuro-presente",
+      pairLabel: "Futuro do Subjuntivo + Futuro do Presente do Indicativo",
+      verbs: [
+        { infinitive: "saber", tense: "Futuro do Subjuntivo", correctAnswer: "souberem" },
+        { infinitive: "ficar", tense: "Futuro do Presente", correctAnswer: "ficarão" },
+      ],
+      explanation:
+        "'Souberem' (Futuro do Subjuntivo) expressa condição temporal futura; 'ficarão' (Futuro do Presente) expressa a consequência que se seguirá.",
+    },
+    {
+      sentence: "Se ela ______ ao evento, todos a ______.",
+      pairId: "futuro-subjuntivo-futuro-presente",
+      pairLabel: "Futuro do Subjuntivo + Futuro do Presente do Indicativo",
+      verbs: [
+        { infinitive: "vir", tense: "Futuro do Subjuntivo", correctAnswer: "vier" },
+        { infinitive: "aplaudir", tense: "Futuro do Presente", correctAnswer: "aplaudirão" },
+      ],
+      explanation:
+        "'Vier' (Futuro do Subjuntivo de 'vir') apresenta a condição futura; 'aplaudirão' (Futuro do Presente) apresenta a consequência certa.",
+    },
+    {
+      sentence: "Quando eu ______ a prova, ______ para casa.",
+      pairId: "futuro-subjuntivo-futuro-presente",
+      pairLabel: "Futuro do Subjuntivo + Futuro do Presente do Indicativo",
+      verbs: [
+        { infinitive: "terminar", tense: "Futuro do Subjuntivo", correctAnswer: "terminar" },
+        { infinitive: "ir", tense: "Futuro do Presente", correctAnswer: "irei" },
+      ],
+      explanation:
+        "Para verbos regulares de 1ª conjugação, o Futuro do Subjuntivo tem a mesma forma do infinitivo ('terminar'); a consequência vai para o Futuro do Presente ('irei').",
+    },
+    {
+      sentence: "Se vocês ______ as instruções, não ______ dificuldades.",
+      pairId: "futuro-subjuntivo-futuro-presente",
+      pairLabel: "Futuro do Subjuntivo + Futuro do Presente do Indicativo",
+      verbs: [
+        { infinitive: "seguir", tense: "Futuro do Subjuntivo", correctAnswer: "seguirem" },
+        { infinitive: "ter", tense: "Futuro do Presente", correctAnswer: "terão" },
+      ],
+      explanation:
+        "'Seguirem' (Futuro do Subjuntivo) expressa condição futura; 'terão' (Futuro do Presente) expressa a consequência negada.",
+    },
+    {
+      sentence: "Quando a banca ______ o edital, os candidatos ______ a inscrição.",
+      pairId: "futuro-subjuntivo-futuro-presente",
+      pairLabel: "Futuro do Subjuntivo + Futuro do Presente do Indicativo",
+      verbs: [
+        { infinitive: "publicar", tense: "Futuro do Subjuntivo", correctAnswer: "publicar" },
+        { infinitive: "fazer", tense: "Futuro do Presente", correctAnswer: "farão" },
+      ],
+      explanation:
+        "'Publicar' (Futuro do Subjuntivo, mesma forma do infinitivo para verbos regulares) expressa a condição futura; 'farão' (Futuro do Presente) expressa a consequência.",
+    },
   ],
   "imperfeito-subjuntivo-futuro-preterito": [
     {
@@ -104,6 +214,61 @@ export const correlationQuestions: Record<CorrelationPairId, CorrelationExercise
       ],
       explanation:
         "'Estudasse' (Imperfeito do Subjuntivo) apresenta uma hipótese não realizada; 'sofreria' (Futuro do Pretérito) apresenta a consequência hipotética correspondente.",
+    },
+    {
+      sentence: "Se eu ______ a resposta, ______ imediatamente.",
+      pairId: "imperfeito-subjuntivo-futuro-preterito",
+      pairLabel: "Pretérito Imperfeito do Subjuntivo + Futuro do Pretérito do Indicativo",
+      verbs: [
+        { infinitive: "saber", tense: "Pretérito Imperfeito do Subjuntivo", correctAnswer: "soubesse" },
+        { infinitive: "responder", tense: "Futuro do Pretérito", correctAnswer: "responderia" },
+      ],
+      explanation:
+        "'Soubesse' (Imperfeito do Subjuntivo) expressa hipótese contrária ao fato; 'responderia' (Futuro do Pretérito) expressa a consequência condicionada.",
+    },
+    {
+      sentence: "Se ele ______ mais cedo, ______ o trem.",
+      pairId: "imperfeito-subjuntivo-futuro-preterito",
+      pairLabel: "Pretérito Imperfeito do Subjuntivo + Futuro do Pretérito do Indicativo",
+      verbs: [
+        { infinitive: "sair", tense: "Pretérito Imperfeito do Subjuntivo", correctAnswer: "saísse" },
+        { infinitive: "pegar", tense: "Futuro do Pretérito", correctAnswer: "pegaria" },
+      ],
+      explanation:
+        "'Saísse' (Imperfeito do Subjuntivo) expressa hipótese; 'pegaria' (Futuro do Pretérito) expressa a consequência condicionada a essa hipótese.",
+    },
+    {
+      sentence: "Se nós ______ mais recursos, ______ o projeto.",
+      pairId: "imperfeito-subjuntivo-futuro-preterito",
+      pairLabel: "Pretérito Imperfeito do Subjuntivo + Futuro do Pretérito do Indicativo",
+      verbs: [
+        { infinitive: "ter", tense: "Pretérito Imperfeito do Subjuntivo", correctAnswer: "tivéssemos" },
+        { infinitive: "expandir", tense: "Futuro do Pretérito", correctAnswer: "expandiríamos" },
+      ],
+      explanation:
+        "'Tivéssemos' (Imperfeito do Subjuntivo, 1ª pessoa do plural) expressa hipótese; 'expandiríamos' (Futuro do Pretérito) expressa a consequência condicionada.",
+    },
+    {
+      sentence: "Se a banca ______ o prazo, os candidatos ______ mais tempo.",
+      pairId: "imperfeito-subjuntivo-futuro-preterito",
+      pairLabel: "Pretérito Imperfeito do Subjuntivo + Futuro do Pretérito do Indicativo",
+      verbs: [
+        { infinitive: "prorrogar", tense: "Pretérito Imperfeito do Subjuntivo", correctAnswer: "prorrogasse" },
+        { infinitive: "ter", tense: "Futuro do Pretérito", correctAnswer: "teriam" },
+      ],
+      explanation:
+        "'Prorrogasse' (Imperfeito do Subjuntivo) expressa hipótese; 'teriam' (Futuro do Pretérito) expressa a consequência condicionada a essa hipótese.",
+    },
+    {
+      sentence: "Se eu ______ a todas as aulas, ______ melhor preparado.",
+      pairId: "imperfeito-subjuntivo-futuro-preterito",
+      pairLabel: "Pretérito Imperfeito do Subjuntivo + Futuro do Pretérito do Indicativo",
+      verbs: [
+        { infinitive: "assistir", tense: "Pretérito Imperfeito do Subjuntivo", correctAnswer: "assistisse" },
+        { infinitive: "estar", tense: "Futuro do Pretérito", correctAnswer: "estaria" },
+      ],
+      explanation:
+        "'Assistisse' (Imperfeito do Subjuntivo) expressa hipótese contrária à realidade; 'estaria' (Futuro do Pretérito) expressa a consequência condicionada.",
     },
   ],
 };

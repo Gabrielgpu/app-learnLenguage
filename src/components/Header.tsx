@@ -3,8 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GraduationCap, Settings, Cpu, Database } from "lucide-react";
+import { GraduationCap, Settings, Cpu, Database, Menu, X } from "lucide-react";
 import SettingsModal from "./SettingsModal";
+
+const API_STATUS_LABEL: Record<"grok" | "gemini" | "openai" | "mock", string> = {
+  grok: "Usando xAI Grok",
+  gemini: "Usando Gemini API",
+  openai: "Usando OpenAI API",
+  mock: "Modo Demo (dados locais)",
+};
 
 const NAV_ITEMS = [
   { href: "/quiz", label: "Quiz" },
@@ -16,6 +23,7 @@ const NAV_ITEMS = [
 
 export default function Header() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeAPI, setActiveAPI] = useState<"grok" | "gemini" | "openai" | "mock">("mock");
   const pathname = usePathname();
 
@@ -39,7 +47,11 @@ export default function Header() {
 
   useEffect(() => {
     const timeoutId = window.setTimeout(checkAPIKeys, 0);
-    return () => window.clearTimeout(timeoutId);
+    window.addEventListener("storage", checkAPIKeys);
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("storage", checkAPIKeys);
+    };
   }, [isSettingsOpen]);
 
   return (
@@ -69,6 +81,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  aria-current={isActive ? "page" : undefined}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                     isActive
                       ? "bg-zinc-900 text-zinc-100 border border-brand-purple/30"
@@ -83,7 +96,11 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             {/* Status Indicator */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-dark-border bg-zinc-900/60 text-xs">
+            <div
+              role="status"
+              aria-label={API_STATUS_LABEL[activeAPI]}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-dark-border bg-zinc-900/60 text-xs"
+            >
               {activeAPI === "grok" ? (
                 <>
                   <span className="w-2 h-2 rounded-full bg-brand-purple animate-pulse" />
@@ -128,9 +145,50 @@ export default function Header() {
               <Settings className="w-4 h-4" />
               <span className="hidden xs:inline">APIs</span>
             </button>
+
+            {/* Mobile menu toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              className="md:hidden p-2 border border-dark-border bg-zinc-900/40 hover:bg-zinc-800 hover:border-zinc-700 active:scale-95 text-zinc-300 hover:text-zinc-100 rounded-xl transition-all cursor-pointer"
+              aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
       </header>
+
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-30 md:hidden bg-black/70 backdrop-blur-sm animate-fade-in"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <nav
+            className="absolute top-16 left-0 right-0 mx-4 border border-dark-border bg-dark-card rounded-2xl p-2 shadow-2xl animate-slide-up flex flex-col gap-1"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {NAV_ITEMS.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`px-4 py-3 rounded-xl text-sm font-bold transition-all ${
+                    isActive
+                      ? "bg-zinc-900 text-zinc-100 border border-brand-purple/30"
+                      : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      )}
 
       <SettingsModal
         isOpen={isSettingsOpen}

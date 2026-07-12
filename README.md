@@ -11,7 +11,7 @@ Este projeto é um aplicativo educacional interativo focado no treino de **tempo
 - **Estilo Visual**: Rocketseat Inspired (Dark-first, acentos em neon e gradientes modernos)
 - **Gerenciamento de Estado**: [Zustand](https://zustand-demo.pmnd.rs/) (Gerenciamento leve e reativo)
 - **Ícones**: [Lucide React](https://lucide.dev/)
-- **IAs Suportadas**: Grok API (xAI) & Gemini API (Google AI Studio)
+- **IAs Suportadas**: Grok API (xAI), Gemini API (Google AI Studio) & OpenAI API
 
 ---
 
@@ -68,21 +68,24 @@ GEMINI_API_KEY=sua_chave_gemini_aqui
 
 ---
 
+## 🔀 Modos de Estudo e Uso de IA
+
+O app tem 5 modos de estudo, cada um com sua própria rota:
+
+- **Quiz** (`/quiz`), **Conjugação Prática** (`/conjugacao`) e **Complete a Frase** (`/complete-frase`) geram e corrigem exercícios via IA (Grok/Gemini/OpenAI, conforme a chave configurada), com fallback automático para um banco de questões local quando não há chave configurada ou a chamada falha.
+- **Correlação Verbal** (`/correlacao-verbal`) usa exclusivamente um banco de questões local — não faz nenhuma chamada de IA, mesmo com chaves configuradas.
+- **Revisão** (`/revisao`) é um painel de referência/consulta de conjugações, também 100% local.
+
+Essa divergência entre modos é conhecida; unificar os demais modos para o mesmo modelo 100% local é uma decisão de produto em aberto para um ciclo futuro.
+
+---
+
 ## 📂 Estrutura do Projeto
 
-Abaixo estão os principais arquivos criados e modificados:
-
-- [src/app/page.tsx](file:///home/gabriel/app-learnLenguage/src/app/page.tsx): Ponto de entrada do app, gerencia a alternância de telas (Home, Quiz, Resultado).
-- [src/app/layout.tsx](file:///home/gabriel/app-learnLenguage/src/app/layout.tsx): Estrutura global do HTML, fontes modernas e metadados para SEO.
-- [src/app/globals.css](file:///home/gabriel/app-learnLenguage/src/app/globals.css): Definições do tema escuro da Rocketseat, paleta de cores e animações personalizadas.
-- [src/lib/store.ts](file:///home/gabriel/app-learnLenguage/src/lib/store.ts): Gerenciador de estado Zustand para controlar o quiz, respostas, estados de loading e requisições HTTP.
-- [src/lib/mockQuestions.ts](file:///home/gabriel/app-learnLenguage/src/lib/mockQuestions.ts): Banco de dados de fallback com questões gramaticais inéditas de alta qualidade para o Modo Demo.
-- **Componentes de UI**:
-  - [src/components/Header.tsx](file:///home/gabriel/app-learnLenguage/src/components/Header.tsx): Cabeçalho com logo, indicador visual do status da API (xAI, Gemini ou Modo Demo) e botão de configurações.
-  - [src/components/SettingsModal.tsx](file:///home/gabriel/app-learnLenguage/src/components/SettingsModal.tsx): Modal interativo para gerenciar as chaves de API localmente.
-  - [src/components/HomeView.tsx](file:///home/gabriel/app-learnLenguage/src/components/HomeView.tsx): Menu inicial com cartões interativos para a escolha do tempo verbal.
-  - [src/components/QuizView.tsx](file:///home/gabriel/app-learnLenguage/src/components/QuizView.tsx): Tela do quiz com barra de progresso, alternativas interativas, resposta instantânea e explicações gramaticais.
-  - [src/components/ResultView.tsx](file:///home/gabriel/app-learnLenguage/src/components/ResultView.tsx): Tela de resultados com score percentual animado (anel SVG), revisão de acertos/erros e feedback detalhado.
+- [src/app/](file:///home/gabriel/app-learnLenguage/src/app/): rotas do App Router — uma pasta por modo de estudo (`quiz/`, `conjugacao/`, `complete-frase/`, `correlacao-verbal/`, `revisao/`), além das API routes em `api/`.
+- [src/components/](file:///home/gabriel/app-learnLenguage/src/components/): componentes de UI, com uma subpasta por modo (`conjugation/`, `correlation/`, `fillblank/`, `review/`) e componentes compartilhados na raiz (`Header.tsx`, `SettingsModal.tsx`, `TenseSelector.tsx`, `ScoreRing.tsx`, `FeedbackPanel.tsx`, etc.).
+- [src/lib/](file:///home/gabriel/app-learnLenguage/src/lib/): stores Zustand, tipos e bancos de questões por modo (ex. `conjugationStore.ts`/`conjugationTypes.ts`, `correlationQuestions.ts`).
+- [src/data/](file:///home/gabriel/app-learnLenguage/src/data/): dados de referência de conjugação verbal por tempo, usados no painel de Revisão.
 
 ---
 
