@@ -17,8 +17,8 @@ export default function ConjugationStartView() {
   } = useConjugationStore();
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 md:py-12 flex flex-col animate-slide-up">
-      <div className="border border-dark-border bg-dark-card rounded-2xl p-6 shadow-xl">
+    <div className="max-w-5xl mx-auto px-4 py-8 md:py-12 flex flex-col animate-slide-up">
+      <div className="max-w-2xl mx-auto w-full border border-dark-border bg-dark-card rounded-2xl p-6 shadow-xl mb-6">
         {/* Title */}
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2.5 rounded-xl bg-gradient-to-tr from-brand-purple/20 to-brand-cyan/20 border border-brand-purple/30">
@@ -34,22 +34,24 @@ export default function ConjugationStartView() {
           </div>
         </div>
 
-        <p className="text-xs text-zinc-400 leading-relaxed mb-5">
+        <p className="text-xs text-zinc-400 leading-relaxed">
           Receba um verbo no infinitivo e conjugue-o corretamente. A IA avalia sua resposta e fornece
           explicações detalhadas. Ideal para treino ativo de memorização.
         </p>
+      </div>
 
-        {/* Tense Selector */}
-        <div className="mb-5">
-          <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">
-            Tempos verbais (opcional)
-          </p>
-          <TenseSelector selected={selectedTenses} onToggle={toggleTense} />
-          <p className="text-[10px] text-zinc-600 mt-2">
-            Nenhum selecionado = todos os tempos verbais.
-          </p>
-        </div>
+      {/* Tense Selector */}
+      <div className="mb-6">
+        <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2 px-1">
+          Tempos verbais (opcional)
+        </p>
+        <TenseSelector selected={selectedTenses} onToggle={toggleTense} />
+        <p className="text-[10px] text-zinc-600 mt-2 px-1">
+          Nenhum selecionado = todos os tempos verbais.
+        </p>
+      </div>
 
+      <div className="max-w-2xl mx-auto w-full border border-dark-border bg-dark-card rounded-2xl p-6 shadow-xl">
         {/* Difficulty Selector */}
         <div className="mb-5">
           <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">
