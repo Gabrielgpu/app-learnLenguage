@@ -3,10 +3,18 @@
 import React from "react";
 import { useConjugationStore } from "@/lib/conjugationStore";
 import { Difficulty } from "@/lib/conjugationTypes";
+import TenseSelector from "@/components/TenseSelector";
 import { ArrowRight, PenLine, Zap, Shield, Flame } from "lucide-react";
 
 export default function ConjugationStartView() {
-  const { difficulty, setDifficulty, startConjugation, loading: conjLoading } = useConjugationStore();
+  const {
+    difficulty,
+    setDifficulty,
+    selectedTenses,
+    toggleTense,
+    startConjugation,
+    loading: conjLoading,
+  } = useConjugationStore();
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 md:py-12 flex flex-col animate-slide-up">
@@ -30,6 +38,17 @@ export default function ConjugationStartView() {
           Receba um verbo no infinitivo e conjugue-o corretamente. A IA avalia sua resposta e fornece
           explicações detalhadas. Ideal para treino ativo de memorização.
         </p>
+
+        {/* Tense Selector */}
+        <div className="mb-5">
+          <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">
+            Tempos verbais (opcional)
+          </p>
+          <TenseSelector selected={selectedTenses} onToggle={toggleTense} />
+          <p className="text-[10px] text-zinc-600 mt-2">
+            Nenhum selecionado = todos os tempos verbais.
+          </p>
+        </div>
 
         {/* Difficulty Selector */}
         <div className="mb-5">

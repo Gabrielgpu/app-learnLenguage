@@ -4,6 +4,7 @@ import {
   FillBlankAnswer,
   CheckFillBlankResponse,
 } from "./fillBlankTypes";
+import { fetchWithApiKeys } from "./aiApiClient";
 
 type FillBlankPhase = "home" | "fillblank-exercise" | "fillblank-result";
 
@@ -25,29 +26,13 @@ interface FillBlankState {
 
 const TOTAL_EXERCISES = 5;
 
-function getApiKeys() {
-  if (typeof window === "undefined") return {};
-  return {
-    grokKey: localStorage.getItem("grok_api_key") || "",
-    geminiKey: localStorage.getItem("gemini_api_key") || "",
-    openaiKey: localStorage.getItem("openai_api_key") || "",
-  };
-}
-
 async function fetchExercise(
   selectedTenses: string[],
   excludeSentences: string[]
 ): Promise<{ exercise: FillBlankExercise; source: string }> {
-  const { grokKey, geminiKey, openaiKey } = getApiKeys();
-  const response = await fetch("/api/fill-blank-exercise", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
-      ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
-      ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
-    },
-    body: JSON.stringify({ selectedTenses, excludeSentences }),
+  const response = await fetchWithApiKeys("/api/fill-blank-exercise", {
+    selectedTenses,
+    excludeSentences,
   });
 
   if (!response.ok) {
@@ -63,22 +48,12 @@ async function checkAnswer(
   exercise: FillBlankExercise,
   userAnswer: string
 ): Promise<CheckFillBlankResponse> {
-  const { grokKey, geminiKey, openaiKey } = getApiKeys();
-  const response = await fetch("/api/check-fill-blank", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(grokKey ? { "x-grok-api-key": grokKey } : {}),
-      ...(geminiKey ? { "x-gemini-api-key": geminiKey } : {}),
-      ...(openaiKey ? { "x-openai-api-key": openaiKey } : {}),
-    },
-    body: JSON.stringify({
-      sentence: exercise.sentence,
-      verb: exercise.verb,
-      tense: exercise.tense,
-      correctAnswer: exercise.correctAnswer,
-      userAnswer,
-    }),
+  const response = await fetchWithApiKeys("/api/check-fill-blank", {
+    sentence: exercise.sentence,
+    verb: exercise.verb,
+    tense: exercise.tense,
+    correctAnswer: exercise.correctAnswer,
+    userAnswer,
   });
 
   if (!response.ok) {
