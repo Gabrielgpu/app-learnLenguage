@@ -17,6 +17,19 @@ interface ReviewSectionProps {
   onSelectTense: (tense: string) => void;
 }
 
+// Full tense names are too long to fit side by side as tabs, but abbreviating
+// to just the first word makes tenses that share a prefix (e.g. the three
+// "Pretérito" tenses) look identical. These short forms stay distinguishable.
+const TENSE_TAB_LABELS: Record<string, string> = {
+  "Presente do Indicativo": "Presente",
+  "Pretérito Perfeito": "Pret. Perfeito",
+  "Pretérito Imperfeito": "Pret. Imperfeito",
+  "Pretérito Mais-que-perfeito": "Mais-que-perfeito",
+  "Futuro do Presente": "Fut. Presente",
+  "Futuro do Pretérito": "Fut. Pretérito",
+  "Futuro do Subjuntivo": "Fut. Subjuntivo",
+};
+
 export default function ReviewSection({
   selectedTenses,
   activeTense,
@@ -72,18 +85,18 @@ export default function ReviewSection({
 
           {/* Active Verb Tense Selector Tabs if multiple selected */}
           {selectedTenses.length > 1 && (
-            <div className="flex gap-1 bg-zinc-900/60 p-1 rounded-xl border border-dark-border self-start sm:self-auto">
+            <div className="flex flex-wrap gap-1 bg-zinc-900/60 p-1 rounded-xl border border-dark-border self-start sm:self-auto">
               {selectedTenses.map((tense) => (
                 <button
                   key={tense}
                   onClick={() => onSelectTense(tense)}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                     activeTense === tense
                       ? "bg-zinc-800 text-zinc-100 shadow-sm"
                       : "text-zinc-400 hover:text-zinc-200"
                   }`}
                 >
-                  {tense.split(" ")[0]}
+                  {TENSE_TAB_LABELS[tense] ?? tense}
                 </button>
               ))}
             </div>
