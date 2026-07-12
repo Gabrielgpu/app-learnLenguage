@@ -20,6 +20,14 @@ export default function ConjugationTable({ info }: ConjugationTableProps) {
     quickTip = "O radical da 2ª pessoa do plural (Vós) sempre se apoia no radical da 2ª pessoa do singular (Tu) adicionando-se um 's' no final (Tu cantaste + s = Vós cantastes; Tu fizeste + s = Vós fizestes).";
   } else if (info.id === "Pretérito Imperfeito") {
     quickTip = "As desinências -ávamos e -áveis da 1ª conjugação, assim como -íamos e -íeis da 2ª/3ª conjugação, são SEMPRE acentuadas graficamente por serem proparoxítonas ou paroxítonas terminadas em ditongo.";
+  } else if (info.id === "Pretérito Mais-que-perfeito") {
+    quickTip = "As formas de 1ª e 2ª pessoa do plural (Nós e Vós) do Pretérito Mais-que-perfeito simples do Indicativo são proparoxítonas e por isso sempre levam acento gráfico (áramos/áreis, êramos/êreis, íramos/íreis).";
+  } else if (info.id === "Futuro do Presente") {
+    quickTip = "As terminações do Futuro do Presente (-rei, -rás, -rá, -remos, -reis, -rão) são sempre adicionadas ao infinitivo COMPLETO do verbo, e não ao radical — por isso são idênticas nas três conjugações.";
+  } else if (info.id === "Futuro do Pretérito") {
+    quickTip = "Assim como no Futuro do Presente, as terminações (-ria, -rias, -ria, -ríamos, -ríeis, -riam) somam-se ao infinitivo completo. Os mesmos verbos irregulares (dizer, fazer, trazer) mantêm o radical contraído: diria, faria, traria.";
+  } else if (info.id === "Futuro do Subjuntivo") {
+    quickTip = "Para formar o Futuro do Subjuntivo, parta da 3ª pessoa do plural do Pretérito Perfeito e retire o '-am' (fizeram → fizer-, trouxeram → trouxer-, vieram → vier-) antes de acrescentar as desinências -, -es, -, -mos, -des, -em.";
   } else {
     quickTip = "Revise as desinências regulares antes de realizar exercícios práticos para fixar as terminações padrão.";
   }

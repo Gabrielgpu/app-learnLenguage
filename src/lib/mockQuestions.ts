@@ -191,5 +191,253 @@ export const mockQuestions: Record<string, Question[]> = {
       correctAnswer: "B",
       explanation: "O pretérito imperfeito do indicativo descreve estados de espírito, sentimentos, desejos e atitudes que possuíam caráter durativo ou estável no passado ('queria', 'preferia')."
     }
+  ],
+  "Pretérito Mais-que-perfeito": [
+    {
+      question: "(VUNESP) Assinale a alternativa em que o verbo destacado está flexionado no Pretérito Mais-que-perfeito do Indicativo (forma simples).",
+      options: [
+        "A) Quando os convidados chegaram, a anfitriã já preparara o jantar.",
+        "B) Ele sempre estudava à noite para o concurso.",
+        "C) Nós fizemos todas as tarefas conforme o combinado.",
+        "D) Se você trouxesse o livro, nós leríamos juntos.",
+        "E) Eles cantarão no coral da igreja no próximo domingo."
+      ],
+      correctAnswer: "A",
+      explanation: "O verbo 'preparara' está flexionado na 3ª pessoa do singular do Pretérito Mais-que-perfeito do Indicativo simples. Indica uma ação concluída no passado antes de outra ação também passada ('chegaram')."
+    },
+    {
+      question: "(FGV) Na frase 'Quando o sinal sonoro soou, os alunos já haviam entregado a prova', a forma verbal 'haviam entregado' equivale a 'entregaram' no Pretérito Mais-que-perfeito. Cronologicamente, qual ação ocorreu primeiro?",
+      options: [
+        "A) O soar do sinal sonoro.",
+        "B) A entrega das provas pelos alunos.",
+        "C) Ambas as ações ocorreram de maneira exatamente simultânea.",
+        "D) A entrega ocorreu após o soar do sinal.",
+        "E) Nenhuma das ações se concretizou de fato."
+      ],
+      correctAnswer: "B",
+      explanation: "O Pretérito Mais-que-perfeito (seja na forma simples 'entregaram' - do verbo entregar: entregara, entregaras, entregara... ou na composta 'haviam entregado') expressa uma ação que ocorreu ANTES de outra ação passada (marcada aqui pelo pretérito perfeito 'soou'). Portanto, a entrega das provas ocorreu primeiro."
+    },
+    {
+      question: "(CEBRASPE) Em qual das seguintes orações a forma verbal sublinhada indica uma ação concluída anteriormente a outro evento passado, configurando o uso clássico do Pretérito Mais-que-perfeito do Indicativo?",
+      options: [
+        "A) Ele correra todas as manhãs quando morava no interior.",
+        "B) Quando a polícia chegou ao local, o suspeito já fugira.",
+        "C) Nós dividíamos o apartamento de forma harmoniosa.",
+        "D) Ontem eu fiz a inscrição para o processo seletivo.",
+        "E) Eles jogavam futebol sob chuva fina."
+      ],
+      correctAnswer: "B",
+      explanation: "Na alternativa B, 'fugira' está no Pretérito Mais-que-perfeito simples, indicando a ação de fugir que aconteceu antes da chegada da polícia ('chegou' - pretérito perfeito). Nas demais opções, temos pretérito imperfeito ('morava', 'dividíamos', 'jogavam') e pretérito perfeito ('fiz')."
+    },
+    {
+      question: "(VUNESP) A frase 'A mãe comprara o presente de aniversário antes do final de semana' apresenta o verbo 'comprar' no Pretérito Mais-que-perfeito simples. Assinale a opção que apresenta a correta correlação de sentido com a forma composta correspondente no indicativo:",
+      options: [
+        "A) A mãe tinha comprado...",
+        "B) A mãe teria comprado...",
+        "C) A mãe estaria comprando...",
+        "D) A mãe fora comprar...",
+        "E) A mãe comprou..."
+      ],
+      correctAnswer: "A",
+      explanation: "A forma composta do Pretérito Mais-que-perfeito do Indicativo é formada pelo auxiliar ter/haver no pretérito imperfeito do indicativo + particípio do verbo principal (tinha/havia comprado). Portanto, 'comprara' equivale a 'tinha comprado' ou 'havia comprado'."
+    },
+    {
+      question: "(FGV) Assinale a alternativa que apresenta a flexão correta do verbo 'trazer' na primeira pessoa do plural (Nós) do Pretérito Mais-que-perfeito do Indicativo simples.",
+      options: [
+        "A) Nós trazeramos",
+        "B) Nós trouxéramos",
+        "C) Nós trazíamos",
+        "D) Nós trouxemos",
+        "E) Nós traríamos"
+      ],
+      correctAnswer: "B",
+      explanation: "O verbo trazer é irregular. O tema do pretérito é 'troux-'. No Pretérito Mais-que-perfeito do Indicativo simples, a flexão para a 1ª pessoa do plural é 'trouxéramos'. 'Trazíamos' está no pretérito imperfeito, 'trouxemos' no pretérito perfeito, e 'traríamos' no futuro do pretérito."
+    }
+  ],
+  "Futuro do Presente": [
+    {
+      question: "(VUNESP) Assinale a alternativa em que o verbo destacado está flexionado no Futuro do Presente do Indicativo.",
+      options: [
+        "A) Amanhã os diretores realizarão a assembleia anual.",
+        "B) Se tivéssemos tempo, leríamos todo o regulamento.",
+        "C) O funcionário sempre atende aos clientes com cortesia.",
+        "D) Ontem a equipe resolveu o problema técnico do sistema.",
+        "E) Ele gostaria de participar da palestra sobre o tema."
+      ],
+      correctAnswer: "A",
+      explanation: "'Realizarão' está flexionado no Futuro do Presente, indicando um fato certo que ocorrerá após o momento da fala. As demais alternativas trazem futuro do pretérito (leríamos, gostaria), presente (atende) e pretérito perfeito (resolveu)."
+    },
+    {
+      question: "(FGV) No trecho 'O edital determina que o candidato entregará os documentos até o dia 10', o uso do Futuro do Presente em 'entregará' expressa:",
+      options: [
+        "A) Uma possibilidade remota e incerta.",
+        "B) Uma obrigação/determinação futura com grau de certeza.",
+        "C) Um hábito frequente no presente.",
+        "D) Uma ação já concluída no passado.",
+        "E) Um desejo condicionado a fatores externos."
+      ],
+      correctAnswer: "B",
+      explanation: "Em textos normativos e editais, o Futuro do Presente é frequentemente usado para expressar obrigações ou determinações futuras com forte grau de certeza, e não hipótese."
+    },
+    {
+      question: "(CEBRASPE) Assinale a alternativa em que a forma verbal apresenta irregularidade correta no Futuro do Presente do Indicativo.",
+      options: [
+        "A) Ele dizerá a verdade amanhã.",
+        "B) Ele direi a verdade amanhã.",
+        "C) Ele dirá a verdade amanhã.",
+        "D) Ele disserá a verdade amanhã.",
+        "E) Ele diria a verdade amanhã."
+      ],
+      correctAnswer: "C",
+      explanation: "O verbo 'dizer' é irregular no Futuro do Presente, contraindo o radical: 'dirá' (3ª pessoa do singular), e não 'dizerá'. 'Direi' é a 1ª pessoa do singular, e 'diria' pertence ao Futuro do Pretérito."
+    },
+    {
+      question: "(VUNESP) Complete corretamente: 'Antes de sair, eu já __________ o relatório.' com a forma composta do Futuro do Presente.",
+      options: [
+        "A) terei terminado",
+        "B) tinha terminado",
+        "C) teria terminado",
+        "D) tenho terminado",
+        "E) terminarei"
+      ],
+      correctAnswer: "A",
+      explanation: "O Futuro do Presente Composto é formado pelo auxiliar 'ter' no Futuro do Presente ('terei') + particípio ('terminado'), indicando uma ação futura que estará concluída antes de outra ação futura."
+    },
+    {
+      question: "(FGV) Assinale a alternativa que substitui corretamente 'Estudarei bastante para o concurso' por uma perífrase equivalente de uso coloquial.",
+      options: [
+        "A) Estudava bastante para o concurso.",
+        "B) Vou estudar bastante para o concurso.",
+        "C) Estudaria bastante para o concurso.",
+        "D) Estudara bastante para o concurso.",
+        "E) Tenho estudado bastante para o concurso."
+      ],
+      correctAnswer: "B",
+      explanation: "Na linguagem coloquial, o Futuro do Presente ('estudarei') é comumente substituído pela perífrase verbo 'ir' no presente + infinitivo ('vou estudar'), mantendo o mesmo valor de futuridade."
+    }
+  ],
+  "Futuro do Pretérito": [
+    {
+      question: "(VUNESP) Assinale a alternativa em que o verbo destacado está flexionado no Futuro do Pretérito do Indicativo, indicando cortesia.",
+      options: [
+        "A) Eu gostaria de fazer uma pergunta.",
+        "B) Eu gosto de fazer perguntas.",
+        "C) Eu gostei de fazer a pergunta.",
+        "D) Eu gostava de fazer perguntas.",
+        "E) Eu gostarei de fazer a pergunta."
+      ],
+      correctAnswer: "A",
+      explanation: "'Gostaria' está no Futuro do Pretérito, usado aqui para suavizar um pedido, tornando-o mais educado — um dos usos característicos desse tempo verbal."
+    },
+    {
+      question: "(FGV) Em 'Ele disse que viajaria assim que possível', a forma verbal 'viajaria' expressa:",
+      options: [
+        "A) Um fato certo e definitivo, sem qualquer condição.",
+        "B) Um fato posterior a outro fato ocorrido no passado ('disse').",
+        "C) Uma ação habitual no passado.",
+        "D) Uma ação concluída antes de outra ação passada.",
+        "E) Uma ordem direta dada no presente."
+      ],
+      correctAnswer: "B",
+      explanation: "O Futuro do Pretérito indica um fato que ocorreria posteriormente a outro fato já passado, muito comum no discurso indireto ('disse que viajaria' = discurso direto 'viajarei')."
+    },
+    {
+      question: "(CEBRASPE) Assinale a alternativa que apresenta corretamente a hipótese condicionada por meio do Futuro do Pretérito.",
+      options: [
+        "A) Se tivesse dinheiro, compro uma casa.",
+        "B) Se tivesse dinheiro, comprarei uma casa.",
+        "C) Se tivesse dinheiro, compraria uma casa.",
+        "D) Se tivesse dinheiro, comprava uma casa.",
+        "E) Se tivesse dinheiro, tinha comprado uma casa."
+      ],
+      correctAnswer: "C",
+      explanation: "A construção condicional clássica em português combina o Pretérito Imperfeito do Subjuntivo na oração condicional ('se tivesse') com o Futuro do Pretérito na oração principal ('compraria'), indicando uma hipótese."
+    },
+    {
+      question: "(VUNESP) Assinale a alternativa que traz corretamente a irregularidade do verbo 'trazer' no Futuro do Pretérito, 1ª pessoa do singular.",
+      options: [
+        "A) Eu trazeria",
+        "B) Eu trarei",
+        "C) Eu traria",
+        "D) Eu trouxera",
+        "E) Eu trazerei"
+      ],
+      correctAnswer: "C",
+      explanation: "O verbo 'trazer' contrai o radical no Futuro do Pretérito: 'traria' (e não 'trazeria'). 'Trarei' pertence ao Futuro do Presente, e 'trouxera' ao Pretérito Mais-que-perfeito."
+    },
+    {
+      question: "(FGV) Complete corretamente: 'Se tivesse dinheiro, eu já __________ viajado no ano passado.' com a forma composta do Futuro do Pretérito.",
+      options: [
+        "A) terei",
+        "B) tinha",
+        "C) teria",
+        "D) tenho",
+        "E) tive"
+      ],
+      correctAnswer: "C",
+      explanation: "O Futuro do Pretérito Composto é formado pelo auxiliar 'ter' no Futuro do Pretérito ('teria') + particípio ('viajado'), indicando um fato que poderia ter acontecido após outro fato passado."
+    }
+  ],
+  "Futuro do Subjuntivo": [
+    {
+      question: "(VUNESP) Assinale a alternativa em que o verbo destacado está flexionado no Futuro do Subjuntivo.",
+      options: [
+        "A) Quando ele vier, conversaremos sobre o projeto.",
+        "B) Quando ele vem, conversamos sobre o projeto.",
+        "C) Quando ele veio, conversamos sobre o projeto.",
+        "D) Quando ele vinha, conversávamos sobre o projeto.",
+        "E) Quando ele viera, já tínhamos conversado."
+      ],
+      correctAnswer: "A",
+      explanation: "'Vier' está no Futuro do Subjuntivo, indicando uma condição futura hipotética. As demais alternativas trazem presente (vem), pretérito perfeito (veio), imperfeito (vinha) e mais-que-perfeito (viera)."
+    },
+    {
+      question: "(FGV) A forma correta do verbo 'trazer' no Futuro do Subjuntivo, 1ª pessoa do plural, é:",
+      options: [
+        "A) Se nós trazermos os documentos...",
+        "B) Se nós trouxermos os documentos...",
+        "C) Se nós trazêssemos os documentos...",
+        "D) Se nós trouxéssemos os documentos...",
+        "E) Se nós traríamos os documentos..."
+      ],
+      correctAnswer: "B",
+      explanation: "O Futuro do Subjuntivo deriva da 3ª pessoa do plural do Pretérito Perfeito ('trouxeram'), retirando-se o '-am': 'trouxer-' + '-mos' = 'trouxermos'."
+    },
+    {
+      question: "(CEBRASPE) Assinale a alternativa que apresenta corretamente a diferença de sentido entre 'Quando ele vem' e 'Quando ele vier'.",
+      options: [
+        "A) Ambas as formas indicam o mesmo fato habitual no presente.",
+        "B) 'Vem' indica hábito no presente; 'vier' indica condição hipotética futura.",
+        "C) 'Vem' indica futuro certo; 'vier' indica passado concluído.",
+        "D) Ambas as formas pertencem ao modo subjuntivo.",
+        "E) 'Vier' indica uma ação já concluída no passado."
+      ],
+      correctAnswer: "B",
+      explanation: "'Vem' está no Presente do Indicativo, expressando um fato habitual. 'Vier' está no Futuro do Subjuntivo, expressando uma condição hipotética que ainda vai se realizar."
+    },
+    {
+      question: "(VUNESP) Assinale a alternativa que completa corretamente: 'Assim que os alunos __________ a prova, poderão sair.' (verbo: terminar)",
+      options: [
+        "A) terminam",
+        "B) terminaram",
+        "C) terminarem",
+        "D) terminassem",
+        "E) terminariam"
+      ],
+      correctAnswer: "C",
+      explanation: "Após o conectivo 'assim que', emprega-se o Futuro do Subjuntivo. Para o verbo regular 'terminar', a 3ª pessoa do plural é 'terminarem' (derivada de 'terminaram', retirando-se o '-am')."
+    },
+    {
+      question: "(FGV) Assinale a alternativa que traz o verbo 'dizer' corretamente flexionado no Futuro do Subjuntivo, 3ª pessoa do singular.",
+      options: [
+        "A) Se ele disser a verdade...",
+        "B) Se ele dissesse a verdade...",
+        "C) Se ele dirá a verdade...",
+        "D) Se ele diria a verdade...",
+        "E) Se ele dizer a verdade..."
+      ],
+      correctAnswer: "A",
+      explanation: "O Futuro do Subjuntivo de 'dizer' deriva de 'disseram' (Pretérito Perfeito), retirando-se o '-am': 'disser'. 'Dissesse' é Pretérito Imperfeito do Subjuntivo; 'dirá' é Futuro do Presente."
+    }
   ]
 };

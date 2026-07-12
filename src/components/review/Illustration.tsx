@@ -86,6 +86,142 @@ export default function Illustration({ tenseId }: IllustrationProps) {
     );
   }
 
+  if (tenseId === "Pretérito Mais-que-perfeito") {
+    // Hourglass/Chronology timeline representing actions before other actions
+    return (
+      <svg
+        viewBox="0 0 100 100"
+        className="w-full h-auto text-amber-500 max-w-[80px]"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <defs>
+          <linearGradient id="past-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#ef4444" />
+          </linearGradient>
+        </defs>
+        {/* Timeline Horizontal Line */}
+        <line x1="15" y1="50" x2="85" y2="50" stroke="url(#past-grad)" strokeWidth="3" />
+        <path d="M80,45 L85,50 L80,55" stroke="url(#past-grad)" strokeWidth="3" />
+        
+        {/* Two events on the timeline */}
+        <circle cx="35" cy="50" r="7" fill="#ef4444" opacity="0.3" stroke="#ef4444" strokeWidth="2.5" />
+        <circle cx="35" cy="50" r="2.5" fill="#ef4444" />
+        <path d="M35,38 L35,25" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2,2" />
+        
+        <circle cx="65" cy="50" r="7" fill="#f59e0b" opacity="0.3" stroke="#f59e0b" strokeWidth="2.5" />
+        <circle cx="65" cy="50" r="2.5" fill="#f59e0b" />
+        <path d="M65,38 L65,25" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="2,2" />
+
+        {/* Curved arrow from later event back to earlier event */}
+        <path d="M65,20 C55,10 45,10 35,20" stroke="url(#past-grad)" strokeWidth="2" />
+        <path d="M40,20 L35,20 L35,15" stroke="url(#past-grad)" strokeWidth="2" />
+
+        {/* Sparkle */}
+        <circle cx="80" cy="25" r="2" fill="#f59e0b" opacity="0.8" />
+      </svg>
+    );
+  }
+
+  if (tenseId === "Futuro do Presente") {
+    // Rocket/arrow launching forward representing certain future facts
+    return (
+      <svg
+        viewBox="0 0 100 100"
+        className="w-full h-auto text-emerald-500 max-w-[80px]"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <defs>
+          <linearGradient id="future-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="100%" stopColor="#22c55e" />
+          </linearGradient>
+        </defs>
+        {/* Ascending arrow path */}
+        <path d="M15,80 L45,50 L60,65 L85,20" stroke="url(#future-grad)" strokeWidth="3" />
+        {/* Arrowhead */}
+        <path d="M68,18 L85,20 L83,37" stroke="url(#future-grad)" strokeWidth="3" />
+        {/* Trail dots */}
+        <circle cx="45" cy="50" r="3" fill="#10b981" opacity="0.6" />
+        <circle cx="60" cy="65" r="3" fill="#22c55e" opacity="0.6" />
+        {/* Sparkle */}
+        <circle cx="22" cy="30" r="2" fill="#22c55e" opacity="0.8" />
+        <circle cx="80" cy="45" r="2" fill="#10b981" opacity="0.8" />
+      </svg>
+    );
+  }
+
+  if (tenseId === "Futuro do Pretérito") {
+    // Thought bubble with a question mark representing hypothesis/condition
+    return (
+      <svg
+        viewBox="0 0 100 100"
+        className="w-full h-auto text-indigo-500 max-w-[80px]"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <defs>
+          <linearGradient id="cond-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#6366f1" />
+            <stop offset="100%" stopColor="#a78bfa" />
+          </linearGradient>
+        </defs>
+        {/* Thought bubble */}
+        <ellipse cx="52" cy="38" rx="34" ry="26" stroke="url(#cond-grad)" strokeWidth="3" />
+        {/* Trailing bubbles */}
+        <circle cx="28" cy="70" r="5" stroke="#6366f1" strokeWidth="2.5" />
+        <circle cx="18" cy="82" r="2.5" fill="#a78bfa" opacity="0.7" />
+        {/* Question mark inside */}
+        <path d="M44,30 C44,22 60,22 60,30 C60,36 52,36 52,44" strokeWidth="3" />
+        <circle cx="52" cy="52" r="1.8" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (tenseId === "Futuro do Subjuntivo") {
+    // Forked path representing conditional/subordinate future clauses
+    return (
+      <svg
+        viewBox="0 0 100 100"
+        className="w-full h-auto text-teal-500 max-w-[80px]"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <defs>
+          <linearGradient id="fork-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#14b8a6" />
+            <stop offset="100%" stopColor="#38bdf8" />
+          </linearGradient>
+        </defs>
+        {/* Trunk */}
+        <path d="M50,88 L50,55" stroke="url(#fork-grad)" strokeWidth="3" />
+        {/* Fork branches */}
+        <path d="M50,55 C50,40 30,40 25,20" stroke="url(#fork-grad)" strokeWidth="3" />
+        <path d="M50,55 C50,40 70,40 75,20" stroke="url(#fork-grad)" strokeWidth="3" />
+        {/* Nodes */}
+        <circle cx="50" cy="88" r="4" fill="#14b8a6" />
+        <circle cx="25" cy="20" r="4" fill="#38bdf8" opacity="0.8" />
+        <circle cx="75" cy="20" r="4" fill="#38bdf8" opacity="0.8" />
+        {/* Sparkle */}
+        <circle cx="60" cy="65" r="2" fill="#14b8a6" opacity="0.8" />
+      </svg>
+    );
+  }
+
   // Pretérito Imperfeito: Quill/feather drawing a wavy line (habits/duration)
   return (
     <svg

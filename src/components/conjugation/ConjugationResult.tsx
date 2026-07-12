@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { useConjugationStore } from "@/lib/conjugationStore";
 import { ConjugationAnswer } from "@/lib/conjugationTypes";
 import { Check, X, Home, RotateCcw, Trophy, AlertTriangle } from "lucide-react";
@@ -44,6 +45,7 @@ function getPerformanceLabel(percent: number) {
 export default function ConjugationResult() {
   const { answers, startConjugation, resetConjugation, loading } =
     useConjugationStore();
+  const router = useRouter();
 
   const totalScore = answers.reduce((sum, a) => sum + a.score, 0);
   const correct = answers.filter((a) => a.isCorrect).length;
@@ -183,7 +185,7 @@ export default function ConjugationResult() {
       {/* ── Actions ──────────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row gap-3">
         <button
-          onClick={resetConjugation}
+          onClick={() => { resetConjugation(); router.push("/"); }}
           className="flex-1 py-3.5 border border-dark-border bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 font-semibold rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
         >
           <Home className="w-4 h-4" />

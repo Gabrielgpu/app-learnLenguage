@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useQuizStore } from "@/lib/store";
 import { Check, X, ArrowRight, HelpCircle, AlertCircle, RefreshCw, Cpu, Database, BookOpen } from "lucide-react";
 import VerbReferenceDrawer from "./VerbReferenceDrawer";
@@ -18,6 +19,7 @@ export default function QuizView() {
     nextQuestion,
     resetQuiz,
   } = useQuizStore();
+  const router = useRouter();
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -54,7 +56,7 @@ export default function QuizView() {
         <p className="text-zinc-400 text-sm mb-6 leading-relaxed">{error}</p>
         <div className="flex gap-3 w-full">
           <button
-            onClick={resetQuiz}
+            onClick={() => { resetQuiz(); router.push("/"); }}
             className="flex-1 py-3 border border-dark-border bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 font-medium rounded-xl text-sm transition-all cursor-pointer"
           >
             Voltar ao Menu
