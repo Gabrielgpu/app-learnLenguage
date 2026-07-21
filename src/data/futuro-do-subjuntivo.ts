@@ -13,34 +13,34 @@ export const futuroDoSubjuntivoData: VerbTenseInfo = {
     {
       conjugation: "1ª Conjugação (-AR)",
       endings: [
-        { person: "Eu", ending: "- (ex: falar → falaram → falar)" },
-        { person: "Tu", ending: "-es (ex: falares)" },
-        { person: "Ele/Ela", ending: "- (ex: falar)" },
-        { person: "Nós", ending: "-mos (ex: falarmos)" },
-        { person: "Vós", ending: "-des (ex: falardes)" },
-        { person: "Eles/Elas", ending: "-em (ex: falarem)" }
+        { person: "Eu", ending: "Se eu falar" },
+        { person: "Tu", ending: "Se tu falares" },
+        { person: "Ele/Ela", ending: "Se ele/ela falar" },
+        { person: "Nós", ending: "Se nós falarmos" },
+        { person: "Vós", ending: "Se vós falardes" },
+        { person: "Eles/Elas", ending: "Se eles/elas falarem" }
       ]
     },
     {
       conjugation: "2ª Conjugação (-ER)",
       endings: [
-        { person: "Eu", ending: "- (ex: vender → venderam → vender)" },
-        { person: "Tu", ending: "-es (ex: venderes)" },
-        { person: "Ele/Ela", ending: "- (ex: vender)" },
-        { person: "Nós", ending: "-mos (ex: vendermos)" },
-        { person: "Vós", ending: "-des (ex: venderdes)" },
-        { person: "Eles/Elas", ending: "-em (ex: venderem)" }
+        { person: "Eu", ending: "Se eu vender" },
+        { person: "Tu", ending: "Se tu venderes" },
+        { person: "Ele/Ela", ending: "Se ele/ela vender" },
+        { person: "Nós", ending: "Se nós vendermos" },
+        { person: "Vós", ending: "Se vós venderdes" },
+        { person: "Eles/Elas", ending: "Se eles/elas venderem" }
       ]
     },
     {
       conjugation: "3ª Conjugação (-IR)",
       endings: [
-        { person: "Eu", ending: "- (ex: partir → partiram → partir)" },
-        { person: "Tu", ending: "-es (ex: partires)" },
-        { person: "Ele/Ela", ending: "- (ex: partir)" },
-        { person: "Nós", ending: "-mos (ex: partirmos)" },
-        { person: "Vós", ending: "-des (ex: partirdes)" },
-        { person: "Eles/Elas", ending: "-em (ex: partirem)" }
+        { person: "Eu", ending: "Se eu partir" },
+        { person: "Tu", ending: "Se tu partires" },
+        { person: "Ele/Ela", ending: "Se ele/ela partir" },
+        { person: "Nós", ending: "Se nós partirmos" },
+        { person: "Vós", ending: "Se vós partirdes" },
+        { person: "Eles/Elas", ending: "Se eles/elas partirem" }
       ]
     }
   ],

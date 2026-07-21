@@ -955,7 +955,10 @@ const personKeyMap: Record<string, string> = {
 function getMockExercise(
   difficulty: Difficulty,
   selectedTenses: string[],
-  excludeVerbs: string[]
+  excludeVerbs: string[],
+  targetVerb?: string,
+  targetTense?: string,
+  targetPerson?: string
 ): ConjugationExercise {
   const pool = difficulty === "easy"
     ? easyVerbs
@@ -970,15 +973,37 @@ function getMockExercise(
       mockTable[v.verb]?.[v.tense]
   );
 
-  const source = filtered.length > 0 ? filtered : pool.filter((v) => mockTable[v.verb]?.[v.tense]);
+  // Prioriza o item indicado pela repetição espaçada, se ele existir na pool.
+  const targeted = targetVerb && targetTense
+    ? filtered.filter((v) => v.verb === targetVerb && v.tense === targetTense)
+    : [];
+
+  const source =
+    targeted.length > 0
+      ? targeted
+      : filtered.length > 0
+      ? filtered
+      : pool.filter((v) => mockTable[v.verb]?.[v.tense]);
   const chosen = source[Math.floor(Math.random() * source.length)] || easyVerbs[0];
   const conjugation = mockTable[chosen.verb]?.[chosen.tense] ?? mockTable["falar"]["Presente do Indicativo"];
 
   const personList = Object.keys(personKeyMap);
-  const person = personList[Math.floor(Math.random() * personList.length)];
+  const person =
+    targetPerson && personList.includes(targetPerson)
+      ? targetPerson
+      : personList[Math.floor(Math.random() * personList.length)];
   const personKey = personKeyMap[person];
 
   const isIrregular = hardVerbs.some((v) => v.verb === chosen.verb);
+
+  const baseExplanation = isIrregular
+    ? `"${chosen.verb}" é um verbo irregular no ${chosen.tense}.`
+    : `"${chosen.verb}" é conjugado regularmente no ${chosen.tense}.`;
+
+  const explanation =
+    chosen.tense === "Futuro do Subjuntivo"
+      ? `${baseExplanation} Ex.: "Se ${person.toLowerCase()} ${conjugation[personKey]}...".`
+      : baseExplanation;
 
   return {
     verb: chosen.verb.toUpperCase(),
@@ -986,9 +1011,7 @@ function getMockExercise(
     person,
     correctAnswer: conjugation[personKey],
     fullConjugation: conjugation,
-    explanation: isIrregular
-      ? `"${chosen.verb}" é um verbo irregular no ${chosen.tense}.`
-      : `"${chosen.verb}" é conjugado regularmente no ${chosen.tense}.`,
+    explanation,
   };
 }
 
@@ -1020,7 +1043,10 @@ Gere exercícios de conjugação verbal no formato JSON especificado. Seja preci
 function buildUserPrompt(
   difficulty: Difficulty,
   selectedTenses: string[],
-  excludeVerbs: string[]
+  excludeVerbs: string[],
+  targetVerb?: string,
+  targetTense?: string,
+  targetPerson?: string
 ): string {
   const diffMap = {
     easy: "somente verbos regulares (ex: falar, estudar, vender, partir, correr, morar)",
@@ -1038,10 +1064,18 @@ function buildUserPrompt(
       ? `NÃO use os seguintes verbos já utilizados nesta sessão: ${excludeVerbs.join(", ")}.`
       : "";
 
+  const targetPart =
+    targetVerb && targetTense
+      ? `Priorize (mas não é obrigatório) o verbo "${targetVerb}" no tempo "${targetTense}"${
+          targetPerson ? ` na pessoa "${targetPerson}"` : ""
+        }, pois o usuário precisa revisar esse item.`
+      : "";
+
   return `Gere UM exercício de conjugação verbal com as seguintes regras:
 - Dificuldade: ${diffMap[difficulty]}
 - ${tensePart}
 - ${excludePart}
+- ${targetPart}
 - Escolha uma pessoa gramatical aleatória (Eu, Tu, Ele/Ela, Nós, Vós ou Eles/Elas)
 - Retorne SOMENTE o JSON abaixo, sem markdown:
 {
@@ -1057,14 +1091,20 @@ function buildUserPrompt(
     "vos": "...",
     "eles": "..."
   },
-  "explanation": "Explicação gramatical breve e clara (1-2 frases)"
+  "explanation": "Explicação gramatical breve e clara (1-2 frases). Se o tempo verbal for Futuro do Subjuntivo, inclua um exemplo no formato 'Se + pessoa + forma verbal' (ex: Se eu falar, Se tu falares) para reforçar o contexto condicional."
 }`;
 }
 
 export async function POST(request: Request) {
   try {
-    const { difficulty = "medium", selectedTenses = [], excludeVerbs = [] } =
-      await request.json();
+    const {
+      difficulty = "medium",
+      selectedTenses = [],
+      excludeVerbs = [],
+      targetVerb,
+      targetTense,
+      targetPerson,
+    } = await request.json();
 
     const xaiKey =
       request.headers.get("x-grok-api-key") ||
@@ -1093,7 +1133,7 @@ export async function POST(request: Request) {
               { role: "system", content: systemPrompt },
               {
                 role: "user",
-                content: buildUserPrompt(difficulty, selectedTenses, excludeVerbs),
+                content: buildUserPrompt(difficulty, selectedTenses, excludeVerbs, targetVerb, targetTense, targetPerson),
               },
             ],
             response_format: { type: "json_object" },
@@ -1134,7 +1174,7 @@ export async function POST(request: Request) {
                       text:
                         systemPrompt +
                         "\n\n" +
-                        buildUserPrompt(difficulty, selectedTenses, excludeVerbs),
+                        buildUserPrompt(difficulty, selectedTenses, excludeVerbs, targetVerb, targetTense, targetPerson),
                     },
                   ],
                 },
@@ -1179,7 +1219,7 @@ export async function POST(request: Request) {
               { role: "system", content: systemPrompt },
               {
                 role: "user",
-                content: buildUserPrompt(difficulty, selectedTenses, excludeVerbs),
+                content: buildUserPrompt(difficulty, selectedTenses, excludeVerbs, targetVerb, targetTense, targetPerson),
               },
             ],
             response_format: { type: "json_object" },
@@ -1205,7 +1245,7 @@ export async function POST(request: Request) {
 
     // ── Mock fallback ────────────────────────────────────────────────────────
     if (!exercise) {
-      exercise = getMockExercise(difficulty, selectedTenses, excludeVerbs);
+      exercise = getMockExercise(difficulty, selectedTenses, excludeVerbs, targetVerb, targetTense, targetPerson);
       dataSource = "mock";
     }
 

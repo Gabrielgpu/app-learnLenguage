@@ -6,6 +6,9 @@ import {
   CheckConjugationResponse,
 } from "./conjugationTypes";
 import { fetchWithApiKeys } from "./aiApiClient";
+import { useProgressStore } from "./progress/progressStore";
+import { conjugationKey } from "./progress/keys";
+import { pickDueTarget } from "./progress/selection";
 
 type ConjugationPhase =
   | "home"
@@ -49,10 +52,19 @@ async function fetchExercise(
   selectedTenses: string[],
   excludeVerbs: string[]
 ): Promise<{ exercise: ConjugationExercise; source: string }> {
+  const target = pickDueTarget(
+    "conjugacao",
+    useProgressStore.getState().items,
+    selectedTenses
+  );
+
   const response = await fetchWithApiKeys("/api/conjugation-exercise", {
     difficulty,
     selectedTenses,
     excludeVerbs,
+    targetVerb: target?.verb,
+    targetTense: target?.tense,
+    targetPerson: target?.person,
   });
 
   if (!response.ok) {
@@ -165,6 +177,17 @@ export const useConjugationStore = create<ConjugationState>((set, get) => ({
 
     set({ loading: true });
 
+    const recordProgress = (isCorrect: boolean) => {
+      const { verb, tense, person } = currentExercise;
+      useProgressStore
+        .getState()
+        .recordAnswer(conjugationKey(verb, tense, person), "conjugacao", isCorrect, {
+          verb,
+          tense,
+          person,
+        });
+    };
+
     try {
       const result = await checkAnswer(currentExercise, userAnswer);
       const score = calcScore(result.isCorrect, hintsUsed);
@@ -180,6 +203,7 @@ export const useConjugationStore = create<ConjugationState>((set, get) => ({
       };
 
       set({ answers: [...answers, newAnswer], loading: false });
+      recordProgress(result.isCorrect);
     } catch {
       // Fallback
       const isCorrect =
@@ -198,6 +222,7 @@ export const useConjugationStore = create<ConjugationState>((set, get) => ({
         score,
       };
       set({ answers: [...answers, newAnswer], loading: false });
+      recordProgress(isCorrect);
     }
   },
 

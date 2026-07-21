@@ -6,13 +6,21 @@ const ALL_TENSES = Object.keys(fillBlankQuestions);
 
 function getMockExercise(
   selectedTenses: string[],
-  excludeSentences: string[]
+  excludeSentences: string[],
+  targetVerb?: string,
+  targetTense?: string
 ): FillBlankExercise {
   const tensePool = selectedTenses.length > 0 ? selectedTenses : ALL_TENSES;
   const pool = tensePool.flatMap((t) => fillBlankQuestions[t] || []);
 
   const filtered = pool.filter((q) => !excludeSentences.includes(q.sentence));
-  const source = filtered.length > 0 ? filtered : pool;
+
+  // Prioriza o item indicado pela repetição espaçada, se ele existir na pool.
+  const targeted = targetVerb && targetTense
+    ? filtered.filter((q) => q.verb === targetVerb && q.tense === targetTense)
+    : [];
+
+  const source = targeted.length > 0 ? targeted : filtered.length > 0 ? filtered : pool;
 
   return source[Math.floor(Math.random() * source.length)] || fillBlankQuestions["Presente do Indicativo"][0];
 }
@@ -35,7 +43,12 @@ function normalizeExercise(parsed: unknown): FillBlankExercise | null {
 const systemPrompt = `Você é um professor de português brasileiro especializado em concursos públicos (VUNESP, FGV, CEBRASPE).
 Gere exercícios de "Complete a Frase" (preenchimento de lacuna com a conjugação correta de um verbo) no formato JSON especificado. Seja preciso gramaticalmente.`;
 
-function buildUserPrompt(selectedTenses: string[], excludeSentences: string[]): string {
+function buildUserPrompt(
+  selectedTenses: string[],
+  excludeSentences: string[],
+  targetVerb?: string,
+  targetTense?: string
+): string {
   const tensePart =
     selectedTenses.length > 0
       ? `Use um dos seguintes tempos verbais: ${selectedTenses.join(", ")}.`
@@ -46,10 +59,16 @@ function buildUserPrompt(selectedTenses: string[], excludeSentences: string[]): 
       ? `NÃO use as seguintes frases já utilizadas nesta sessão: ${excludeSentences.join(" | ")}.`
       : "";
 
+  const targetPart =
+    targetVerb && targetTense
+      ? `Priorize (mas não é obrigatório) o verbo "${targetVerb}" no tempo "${targetTense}", pois o usuário precisa revisar esse item.`
+      : "";
+
   return `Gere UM exercício de "Complete a Frase" com as seguintes regras:
 - ${tensePart}
 - A frase deve conter uma lacuna representada por "______" (6 sublinhados) no lugar da conjugação do verbo indicado.
 - ${excludePart}
+- ${targetPart}
 - Contexto de concurso público (pode incluir um pequeno fragmento de texto formal).
 - Retorne SOMENTE o JSON abaixo, sem markdown:
 {
@@ -63,7 +82,7 @@ function buildUserPrompt(selectedTenses: string[], excludeSentences: string[]): 
 
 export async function POST(request: Request) {
   try {
-    const { selectedTenses = [], excludeSentences = [] } = await request.json();
+    const { selectedTenses = [], excludeSentences = [], targetVerb, targetTense } = await request.json();
 
     const xaiKey =
       request.headers.get("x-grok-api-key") ||
@@ -90,7 +109,7 @@ export async function POST(request: Request) {
             model: "grok-4.3",
             messages: [
               { role: "system", content: systemPrompt },
-              { role: "user", content: buildUserPrompt(selectedTenses, excludeSentences) },
+              { role: "user", content: buildUserPrompt(selectedTenses, excludeSentences, targetVerb, targetTense) },
             ],
             response_format: { type: "json_object" },
             temperature: 0.8,
@@ -122,7 +141,7 @@ export async function POST(request: Request) {
               contents: [
                 {
                   role: "user",
-                  parts: [{ text: systemPrompt + "\n\n" + buildUserPrompt(selectedTenses, excludeSentences) }],
+                  parts: [{ text: systemPrompt + "\n\n" + buildUserPrompt(selectedTenses, excludeSentences, targetVerb, targetTense) }],
                 },
               ],
               generationConfig: {
@@ -160,7 +179,7 @@ export async function POST(request: Request) {
             model: "gpt-4o-mini",
             messages: [
               { role: "system", content: systemPrompt },
-              { role: "user", content: buildUserPrompt(selectedTenses, excludeSentences) },
+              { role: "user", content: buildUserPrompt(selectedTenses, excludeSentences, targetVerb, targetTense) },
             ],
             response_format: { type: "json_object" },
             temperature: 0.8,
@@ -182,7 +201,7 @@ export async function POST(request: Request) {
 
     // ── Mock fallback ────────────────────────────────────────────────────────
     if (!exercise) {
-      exercise = getMockExercise(selectedTenses, excludeSentences);
+      exercise = getMockExercise(selectedTenses, excludeSentences, targetVerb, targetTense);
       dataSource = "mock";
     }
 

@@ -56,7 +56,7 @@ export default function ConjugationTable({ info }: ConjugationTableProps) {
         <div className="bg-zinc-900/30 border border-dark-border/50 rounded-xl overflow-hidden shadow-inner">
           <div className="bg-zinc-900/50 px-4 py-2 border-b border-dark-border/50 text-[10px] uppercase font-bold tracking-wider text-zinc-500 flex justify-between">
             <span>Pessoa</span>
-            <span>Terminação regular</span>
+            <span>{info.id === "Futuro do Subjuntivo" ? "Exemplo com 'Se'" : "Terminação regular"}</span>
           </div>
           <div className="divide-y divide-dark-border/30">
             {info.groups[activeTab].endings.map((ending, idx) => (

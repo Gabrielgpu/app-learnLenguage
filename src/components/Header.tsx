@@ -18,7 +18,9 @@ const NAV_ITEMS = [
   { href: "/conjugacao", label: "Conjugação" },
   { href: "/complete-frase", label: "Complete a Frase" },
   { href: "/correlacao-verbal", label: "Correlação Verbal" },
+  { href: "/verbos-derivados", label: "Verbos Derivados" },
   { href: "/revisao", label: "Revisão" },
+  { href: "/progresso", label: "Meu Progresso" },
 ];
 
 export default function Header() {
