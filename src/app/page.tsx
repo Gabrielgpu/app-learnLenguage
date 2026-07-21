@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { BookOpen, ArrowRight, Zap, PenLine, Puzzle, GraduationCap, GitBranch } from "lucide-react";
+import { BookOpen, ArrowRight, Zap, PenLine, Puzzle, GraduationCap, GitBranch, TrendingUp, Repeat } from "lucide-react";
 
 const FEATURES = [
   {
@@ -47,6 +47,16 @@ const FEATURES = [
     border: "hover:border-fuchsia-500/30 border-dark-border",
   },
   {
+    href: "/verbos-derivados",
+    title: "Verbos Derivados",
+    description: "Pratique repor, manter, intervir, prever e outros derivados de pôr, ter, vir e ver — todos seguem o padrão do verbo primitivo.",
+    icon: Repeat,
+    iconBg: "bg-gradient-to-tr from-emerald-500/20 to-lime-400/20 border-emerald-500/30",
+    iconColor: "text-emerald-400",
+    shadow: "shadow-emerald-500/10",
+    border: "hover:border-emerald-500/30 border-dark-border",
+  },
+  {
     href: "/revisao",
     title: "Área de Revisão",
     description: "Consulte definições, tabelas de conjugação, exemplos e pegadinhas de concurso para os 7 tempos verbais.",
@@ -55,6 +65,16 @@ const FEATURES = [
     iconColor: "text-orange-400",
     shadow: "shadow-orange-500/10",
     border: "hover:border-orange-500/30 border-dark-border",
+  },
+  {
+    href: "/progresso",
+    title: "Meu Progresso",
+    description: "Veja o que você já domina e quais verbos/tempos merecem revisão, com repetição espaçada salva no navegador.",
+    icon: TrendingUp,
+    iconBg: "bg-gradient-to-tr from-brand-cyan/20 to-brand-purple/20 border-brand-cyan/30",
+    iconColor: "text-brand-cyan",
+    shadow: "shadow-brand-cyan/10",
+    border: "hover:border-brand-cyan/30 border-dark-border",
   },
 ];
 

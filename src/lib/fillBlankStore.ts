@@ -5,6 +5,9 @@ import {
   CheckFillBlankResponse,
 } from "./fillBlankTypes";
 import { fetchWithApiKeys } from "./aiApiClient";
+import { useProgressStore } from "./progress/progressStore";
+import { fillBlankKey } from "./progress/keys";
+import { pickDueTarget } from "./progress/selection";
 
 type FillBlankPhase = "home" | "fillblank-exercise" | "fillblank-result";
 
@@ -30,9 +33,17 @@ async function fetchExercise(
   selectedTenses: string[],
   excludeSentences: string[]
 ): Promise<{ exercise: FillBlankExercise; source: string }> {
+  const target = pickDueTarget(
+    "complete-frase",
+    useProgressStore.getState().items,
+    selectedTenses
+  );
+
   const response = await fetchWithApiKeys("/api/fill-blank-exercise", {
     selectedTenses,
     excludeSentences,
+    targetVerb: target?.verb,
+    targetTense: target?.tense,
   });
 
   if (!response.ok) {
@@ -116,6 +127,13 @@ export const useFillBlankStore = create<FillBlankState>((set, get) => ({
 
     set({ loading: true });
 
+    const recordProgress = (isCorrect: boolean) => {
+      const { verb, tense } = currentExercise;
+      useProgressStore
+        .getState()
+        .recordAnswer(fillBlankKey(verb, tense), "complete-frase", isCorrect, { verb, tense });
+    };
+
     try {
       const result = await checkAnswer(currentExercise, userAnswer);
       const newAnswer: FillBlankAnswer = {
@@ -126,6 +144,7 @@ export const useFillBlankStore = create<FillBlankState>((set, get) => ({
         feedbackType: result.feedbackType,
       };
       set({ answers: [...answers, newAnswer], loading: false });
+      recordProgress(result.isCorrect);
     } catch {
       const isCorrect =
         userAnswer.trim().toLowerCase() === currentExercise.correctAnswer.trim().toLowerCase();
@@ -137,6 +156,7 @@ export const useFillBlankStore = create<FillBlankState>((set, get) => ({
         feedbackType: isCorrect ? "correct" : "other",
       };
       set({ answers: [...answers, newAnswer], loading: false });
+      recordProgress(isCorrect);
     }
   },
 

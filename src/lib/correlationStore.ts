@@ -6,25 +6,28 @@ import {
 } from "./correlationTypes";
 import { correlationQuestions } from "./correlationQuestions";
 import { FeedbackType } from "./conjugationTypes";
+import { useProgressStore } from "./progress/progressStore";
+import { correlationKey } from "./progress/keys";
+import { weightedPickMany } from "./progress/selection";
+import { ProgressMap } from "./progress/types";
 
 type CorrelationPhase = "home" | "correlation-exercise" | "correlation-result";
 
 const TOTAL_EXERCISES = 5;
 const ALL_PAIR_IDS = Object.keys(correlationQuestions) as CorrelationPairId[];
 
-function shuffle<T>(items: T[]): T[] {
-  const result = [...items];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
-
-function buildSession(selectedPairs: CorrelationPairId[]): CorrelationExercise[] {
+function buildSession(
+  selectedPairs: CorrelationPairId[],
+  progress: ProgressMap
+): CorrelationExercise[] {
   const pairPool = selectedPairs.length > 0 ? selectedPairs : ALL_PAIR_IDS;
-  const pool = pairPool.flatMap((p) => correlationQuestions[p] || []);
-  return shuffle(pool).slice(0, TOTAL_EXERCISES);
+  const candidates = pairPool.flatMap((pairId) =>
+    correlationQuestions[pairId].map((exercise, index) => ({
+      item: exercise,
+      key: correlationKey(pairId, index),
+    }))
+  );
+  return weightedPickMany(candidates, progress, TOTAL_EXERCISES);
 }
 
 function checkAnswers(
@@ -92,7 +95,8 @@ export const useCorrelationStore = create<CorrelationState>((set, get) => ({
     const { selectedPairs } = get();
     if (selectedPairs.length === 0) return;
 
-    const session = buildSession(selectedPairs);
+    const progress = useProgressStore.getState().items;
+    const session = buildSession(selectedPairs, progress);
     set({
       phase: "correlation-exercise",
       session,
@@ -112,6 +116,15 @@ export const useCorrelationStore = create<CorrelationState>((set, get) => ({
       ...result,
     };
     set({ answers: [...answers, newAnswer] });
+
+    const { pairId } = currentExercise;
+    const index = correlationQuestions[pairId].indexOf(currentExercise);
+    useProgressStore.getState().recordAnswer(
+      correlationKey(pairId, index),
+      "correlacao-verbal",
+      result.isCorrect,
+      { pairId, index }
+    );
   },
 
   nextCorrelation: () => {
